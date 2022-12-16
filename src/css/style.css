@@ -266,7 +266,8 @@ img.darkmode{
 	justify-content: space-between;
 	align-items: center;
 	width: 96%;
-	margin: 100px auto 20px;
+	margin: 0 auto;
+  padding: 40px 20px;
 }
 .footercol ul{
 	margin: 0px;
@@ -349,7 +350,7 @@ img.darkmode{
 		margin-bottom: 318px;
 	}
 	.globlefooter{
-		margin: 20px auto;
+		margin: 0 auto;
 	}
 }
 @media only screen and (max-width: 768px){
