@@ -1,6 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSigner } from 'wagmi';
+import { useContract } from '../utils/constants';
 
-const Claim = () => {
+const Claim = ({validators}: {validators: any}) => {
+	const { data: signer } = useSigner();
+
+  const claim = async () => {
+    try {
+			let input: any = document.getElementsByClassName("validator-claim");
+			let arg: Array<number> = [];
+			for(let i = 0; i < input.length; i++) {
+				if(input[i].checked) {
+					arg.push(Number(input[i].value));
+				}
+			}
+      const contract = useContract(signer);
+			const tx = await contract.withdrawRewards(arg);
+			await tx.wait();
+			alert("Successfully exited protocol for selected validators");
+    } catch(err) {
+      console.log(err);
+    }
+  };
+
   return(
       <div className="tab-pane" id="tabs-3" role="tabpanel">
         <div className="fullhegigth">
@@ -15,20 +37,17 @@ const Claim = () => {
           </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Oxab14..........</td>
-              <td>0.175</td>
-              <td><form><input type="checkbox"/></form></td>
+						{validators.map((validator: any, key: any) => (
+						<tr key={key}>
+							<td>{`${validator.pubKey.slice(0,18)}....${validator.pubKey.slice(80)}`}</td>
+              <td>{validator.rewards}</td>
+              <td><form><input type="checkbox" className="validator-claim" value={validator.id}/></form></td>
             </tr>
-            <tr>
-              <td>Oxch97..........</td>
-              <td>0.175</td>
-              <td><form><input type="checkbox"/></form></td>
-            </tr>
+						))}
           </tbody>
         </table>
       </div>
-      <div className="fixebtn"><a href="#" className="uniqbtn">Claim Rewards</a></div>
+      <div className="fixebtn"><a href="#" onClick={claim} className="uniqbtn">Claim Rewards</a></div>
     </div>
       </div>
   );

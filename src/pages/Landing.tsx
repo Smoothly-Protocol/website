@@ -21,15 +21,15 @@ const Landing = () => {
         {/* Footer */}
         <div className="splashfooter">
           <div className="splashcol">
-            <p><a href="#"><img src={discord} title="discord" alt="discord" /></a></p>
+            <p><a href="https://discord.gg/WvcEAcg9Aj" target="_blank"><img src={discord} title="discord" alt="discord" /></a></p>
             <p><a href="#">FAQ</a></p>
           </div>
           <div className="splashcol">
-            <p><a href="#"><img src={twitter} title="Twitter" alt="Twitter" /></a></p>
+            <p><a href="https://twitter.com/0xSmoothly" target="_blank"><img src={twitter} title="Twitter" alt="Twitter" /></a></p>
             <p><a href="#">Docs</a></p>
           </div>
           <div className="splashcol">
-            <p><a href="#"><img src={github} title="Github" alt="Github" /></a></p>
+            <p><a href="https://twitter.com/0xSmoothly" target="_blank"><img src={github} title="Github" alt="Github" /></a></p>
             <p><a href="#">Read Me</a></p>
           </div>
         </div>

@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import { utils } from "ethers";
-import { useAccount } from 'wagmi';
+import { useSigner } from 'wagmi';
 import { hexEncode } from '../utils/hex';
 import { useContract } from '../utils/constants';
 
 const Register = ({validators, registrants}: {validators: any, registrants: any}) => {
-  //const contract = useContract();
+	const { data: signer } = useSigner();
   const [selectedValidators, setSelectedValidators] = useState([]);
 
   const updateSelectedValidators = () => {
@@ -21,18 +21,17 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
 
 	const register = async () => {
 		try	{
+      const contract = useContract(signer);
 		  const faq: any = document.getElementById("readFAQ");
 		  const stake: any = document.getElementById("stakeInfo");
 		  const feeRecipient: any = document.getElementById("feeRecipient");
 			if(faq.checked && stake.checked && feeRecipient.checked ) {
 				if(selectedValidators.length > 0) {
-/*
 					const tx = await contract.registerBulk(selectedValidators, 
 					{
 						value: utils.parseEther("0.65").mul(selectedValidators.length)
 					});
 					await tx.wait();
-*/
 					alert("Successfully registered on contract, still need to verify");
 				} else {
 					alert("No validators selected");
@@ -102,7 +101,7 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
       </div>
       <div className="form-group form-check">
         <input type="checkbox" className="form-check-input" id="feeRecipient"/>
-        <label className="form-check-label" >Please verify the fee recipient is 0x33450…………………..</label>
+        <label className="form-check-label" >Please verify the fee recipient is 0x57d4b219a5076d814d2dfefa87b3c382d05a4d43</label>
       </div>
     </div>
     <div className="fixebtn"><a href="#" onClick={register} className="uniqbtn">Stake {selectedValidators.length * 0.65} ETH & Register </a></div>

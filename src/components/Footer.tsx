@@ -10,7 +10,7 @@ const Footer = () => {
 		<div className="globlefooter">
 			<div className="footercol">
 				<ul>
-					<li><a href="#" target="_blank"><img src={discord} title="chat" alt="chat" /></a></li>
+					<li><a href="https://discord.gg/WvcEAcg9Aj" target="_blank"><img src={discord} title="chat" alt="chat" /></a></li>
 					<li><a href="https://twitter.com/0xSmoothly" target="_blank"><img src={twitter} title="Twitter" alt="Twitter" /></a></li>
 					<li><a href="https://github.com/Smoothly-Protocol" target="_blank"><img src={github} title="Github" alt="Github" /></a></li>
 				</ul>

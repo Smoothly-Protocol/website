@@ -49,8 +49,10 @@ const Dashboard = () => {
 				const registered = await getBalance();
 			
         if(data.length > 0) {
+          setValidators([]);
+          setRegValidators([]);
           data.map((validator: any) => {
-						//if(validator.validatorindex != null) {
+						if(validator.validatorindex != null) {
 							const isReg = registered.map((val: any) => {
 								if(validator.publickey === val.pubKey) {
 									setValidators(current => [...current, val]);
@@ -58,7 +60,7 @@ const Dashboard = () => {
 								}
 							});		
 							isReg ? null : setRegValidators(current => [...current, validator.publickey]);
-						//}
+						}
 					});
         } else {
 					setValidators([]);
@@ -81,8 +83,8 @@ const Dashboard = () => {
 				<div className="tab-content maincontent">
           <Register registrants={regValidators} validators={validators}/>
           <Balance validators={validators}/>
-					<Claim />
-					<Exit />
+					<Claim validators={validators}/>
+					<Exit validators={validators}/>
 				</div>
 			<Footer />
     </div>
