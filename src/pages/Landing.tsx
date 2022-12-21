@@ -15,7 +15,9 @@ const Landing = () => {
         <div className="logostyle">
           <p><img src={logo} title="MEV Smoothing Pool" alt="MEV Smoothing Pool" /></p>
           <p className="esbtnwidth">
-          <button onClick={openConnectModal} className="entersmoothly" type="button">Enter Smoothly <i className="fa fa-angle-right" aria-hidden="true"></i></button>
+          <button onClick={openConnectModal} className="entersmoothly" type="button">Enter Smoothly 
+          <i className="fa fa-angle-right" aria-hidden="true"></i>
+          </button>
           </p>
         </div>
         {/* Footer */}
