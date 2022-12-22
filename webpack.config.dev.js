@@ -8,7 +8,6 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
   },
   devServer: {
-    //open: true,
     client: {
       logging: 'error',
       overlay: {
