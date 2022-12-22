@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { utils } from "ethers";
+import { useSigner } from 'wagmi';
 import { hexToChar } from '../utils/hex';
+import { useContract } from '../utils/constants';
 
 const Balance = ({validators}: {validators: any}) => {
-
+	const { data: signer } = useSigner();
   const addStake = async () => {
     try {
-      
+      for(let i = 0; i < validators.length; i++) {
+        if(validators[i].stake < "0.65") {
+          const contract = useContract(signer);
+          const amount = utils.parseEther(String(0.65 - Number(validators[i].stake)));
+          const tx = await contract.addStake(validators.id, {value: amount });
+          await tx.wait();
+          alert("Successfully added stake");
+        } 
+      } 
     } catch(err) {
       console.log(err);
     }
