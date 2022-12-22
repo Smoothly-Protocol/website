@@ -10,6 +10,7 @@ import Register from './Register';
 import Balance from './Balance';
 import Claim from './Claim';
 import Exit from './Exit';
+import Pool from './Pool';
 
 const Dashboard = () => {
   const { address } = useAccount();
@@ -86,6 +87,7 @@ return (
       <Balance validators={validators}/>
       <Claim validators={validators}/>
       <Exit validators={validators}/>
+      <Pool />
     </div>
     <Footer />
   </div>

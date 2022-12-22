@@ -3,6 +3,15 @@ import { utils } from "ethers";
 import { hexToChar } from '../utils/hex';
 
 const Balance = ({validators}: {validators: any}) => {
+
+  const addStake = async () => {
+    try {
+      
+    } catch(err) {
+      console.log(err);
+    }
+  }
+
   return (
       <div className="tab-pane" id="tabs-2" role="tabpanel">
         <h2>Registered Validator</h2>
@@ -52,6 +61,7 @@ const Balance = ({validators}: {validators: any}) => {
           </tbody>
         </table>
       </div>
+      <div className="fixebtn" onClick={addStake}><a href="#" className="uniqbtn">Add Stake</a></div>
       </div>
   );
 }

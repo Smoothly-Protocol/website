@@ -28,6 +28,7 @@ const Header = () => {
 							<li><a className="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Check Balance</a></li>
 							<li><a className="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Claim Rewards</a></li>
 							<li><a className="nav-link" data-toggle="tab" href="#tabs-4" role="tab">Exit Pool</a></li>
+              <li><a className="nav-link" data-toggle="tab" href="#tabs-5" role="tab">Pool Stats</a></li>
 						</ul>
 					</div>
 				</div>
