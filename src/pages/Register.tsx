@@ -22,14 +22,13 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
 	const register = async () => {
 		try	{
       const contract = useContract(signer);
-		  const faq: any = document.getElementById("readFAQ");
 		  const stake: any = document.getElementById("stakeInfo");
 		  const feeRecipient: any = document.getElementById("feeRecipient");
-			if(faq.checked && stake.checked && feeRecipient.checked ) {
+			if( stake.checked && feeRecipient.checked ) {
 				if(selectedValidators.length > 0) {
 					const tx = await contract.registerBulk(selectedValidators, 
 					{
-						value: utils.parseEther("0.65").mul(selectedValidators.length)
+						value: utils.parseEther("0.065").mul(selectedValidators.length)
 					});
 					await tx.wait();
 					alert("Successfully registered on contract, still need to verify");
@@ -53,13 +52,15 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
           <tr>
           <th>Registered</th>
           <th>Status</th>
+          <th>Standing</th>
         </tr>
         </thead>
         <tbody>
           {validators.map((validator: any, key: any) => (
           <tr key={key}>
             <td>{`${validator.pubKey.slice(0,18)}....${validator.pubKey.slice(80)}`}</td>
-            <td>Activated</td>
+            <td>{validator.state.status}</td>
+            <td>{validator.state.standing}</td>
           </tr>
 					))}
         </tbody>
@@ -92,19 +93,15 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
     </div>
     <div className="mcrow1 margins1">
       <div className="form-group form-check">
-        <input type="checkbox" className="form-check-input" id="readFAQ"/>
-        <label className="form-check-label">Before you register, have you read our FAQ to understand how the pool functions?</label>
-      </div>
-      <div className="form-group form-check">
         <input type="checkbox" className="form-check-input" id="stakeInfo"/>
-        <label className="form-check-label" >The 0.65 ETH you’re staking to the protocol will be slashed (added to the pool) and your validator will be unregistered if you propose a block with the incorrect fee recipient. Have you updated the fee recipient associated with all validators being registered to the pool?</label>
+        <label className="form-check-label" >I've read the Smoothly <a href="">docs</a> and understand how the pool functions</label>
       </div>
       <div className="form-group form-check">
         <input type="checkbox" className="form-check-input" id="feeRecipient"/>
-        <label className="form-check-label" >Please verify the fee recipient is 0x57d4b219a5076d814d2dfefa87b3c382d05a4d43</label>
+        <label className="form-check-label" >Please verify the fee recipient is 0xAF4248Dc6F4748CdaF15924685f69fe8B60fa9F7</label>
       </div>
     </div>
-    <div className="fixebtn"><a href="#" onClick={register} className="uniqbtn">Stake {selectedValidators.length * 0.65} ETH & Register </a></div>
+    <div className="fixebtn"><a href="#" onClick={register} className="uniqbtn">Stake {selectedValidators.length * 0.065} ETH & Register </a></div>
     </div>
   );
 }

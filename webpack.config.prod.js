@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: "production",
+  devtool: 'source-map',
   entry: './src/index.tsx',
   output: {
     filename: 'bundle.js',

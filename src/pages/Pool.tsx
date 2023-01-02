@@ -1,6 +1,30 @@
-import React from 'react';
+import React, {useState, useEffect }from 'react';
 
 const Pool = () => {
+  const [stats, setStats] = useState({
+    activated_validators: 0,
+    awaiting_activation_validators: 0,
+    total_value_period: 0,
+    total_value: 0,
+    average_value: 0, 
+    total_miss: 0,
+    total_fee: 0,
+  });
+
+  const getPoolStats = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/poolstats");
+      const data = await response.json();
+      setStats(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getPoolStats();
+  }, []);
+
   return (
 		<div className="tab-pane" id="tabs-5" role="tabpanel">
 			<h2>Pool Stats</h2>
@@ -17,11 +41,11 @@ const Pool = () => {
 							</thead>
 							<tbody>
 									<tr>
-											<td>50</td>
-											<td>10</td>
-											<td>3.21</td>
-											<td>7</td>
-											<td>10</td>
+											<td>{stats.activated_validators}</td>
+											<td>{stats.awaiting_activation_validators}</td>
+											<td>{stats.total_value_period}</td>
+											<td>{stats.total_value}</td>
+											<td>{stats.average_value}</td>
 									</tr>
 							</tbody>
 					</table>
@@ -34,16 +58,14 @@ const Pool = () => {
 									<tr>
 											<th>Fee Recipient Slashings</th>
 											<th>Missed Proposal Slashings</th>
-											<th>Voluntary Exit Slashings</th>
 											<th>Total value from slashings</th>
 									</tr>
 							</thead>
 							<tbody>
 									<tr>
-											<td>5</td>
-											<td>15</td>
-											<td>3.21</td>
-											<td>7</td>
+											<td>{stats.total_fee}</td>
+											<td>{stats.total_miss}</td>
+										  <td>{(stats.total_fee * 0.05) + (stats.total_miss * 0.015)}</td>
 									</tr>
 							</tbody>
 					</table>

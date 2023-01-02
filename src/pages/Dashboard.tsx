@@ -18,6 +18,26 @@ const Dashboard = () => {
   const [ validators, setValidators ] = useState([]);
   const [ regValidators, setRegValidators ] = useState([]);
 
+  const getValidatorState = async (pubKey: string) => {
+    try {
+      const response = await fetch(`http://localhost:4000/validatorstatus/${pubKey}`);
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const withdrawals = async (v: string) => {
+    try {
+      const response = await fetch(`http://localhost:4000/withdrawals/${v}`);
+      const data = await response.json();
+      return utils.formatEther(data.total_withdrawals);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   useEffect(() => {
 
     const getBalance = async () => {
@@ -27,12 +47,15 @@ const Dashboard = () => {
         let _validators: any = [];
         for(let i = 0; i < b.length; i++) {
           if(b[i][0] !== "0x") {
+            const pubKey = hexToChar(b[i][0]);
             _validators.push({
-              pubKey: hexToChar(b[i][0]),
+              pubKey: pubKey,
               rewards: utils.formatUnits(b[i][1], "ether"), 
               slashes: String(b[i][2]),
               stake: utils.formatUnits(b[i][3], "ether"),
-              id: i
+              id: i,
+              state: await getValidatorState(pubKey),
+              withdrawals: await withdrawals(pubKey)
             });	
           }
         }

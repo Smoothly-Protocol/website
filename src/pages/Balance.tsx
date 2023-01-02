@@ -22,6 +22,15 @@ const Balance = ({validators}: {validators: any}) => {
     }
   }
 
+  const daysTillRebalance = () => {
+    const d = new Date;
+    const day = d.getDay();
+    if( day > 0 ) {
+      return String(7 - day);
+    }
+    return "0";
+  }
+
   return (
       <div className="tab-pane" id="tabs-2" role="tabpanel">
         <h2>Registered Validator</h2>
@@ -40,8 +49,8 @@ const Balance = ({validators}: {validators: any}) => {
 						<tr key={key}>
 							<td>{`${validator.pubKey.slice(0,18)}....${validator.pubKey.slice(80)}`}</td>
               <td>{validator.rewards}</td>
-              <td>{validator.rewards}</td>
-              <td>5</td>
+              <td>{validator.withdrawals}</td>
+              <td>{`${daysTillRebalance()}`}</td>
             </tr>
 						))}
           </tbody>
@@ -55,7 +64,6 @@ const Balance = ({validators}: {validators: any}) => {
             <tr>
             <th>Pub Key</th>
             <th>Deposit Balance</th>
-            <th>Missed Proposals</th>
             <th>Slashings</th>
           </tr>
           </thead>
@@ -64,7 +72,6 @@ const Balance = ({validators}: {validators: any}) => {
 						<tr key={key}>
 							<td>{`${validator.pubKey.slice(0,18)}....${validator.pubKey.slice(80)}`}</td>
               <td>{validator.stake}</td>
-              <td>{validator.rewards}</td>
               <td>{validator.slashes}</td>
             </tr>
 						))}

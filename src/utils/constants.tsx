@@ -1,6 +1,6 @@
 import { Contract, Signer } from "ethers";
 
-const contractAddress = "0x57d4b219a5076d814d2dfefa87b3c382d05a4d43";
+const contractAddress = "0x96c889d2772189b518936f332c5b8113096ca8b3";
 const abi = [
   "function registerBulk(bytes[] memory pubKeys) external payable",
   "function withdrawRewards(uint[] memory validator_ids) public",
