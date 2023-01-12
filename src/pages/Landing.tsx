@@ -5,6 +5,7 @@ import logo from '../images/logo.jpg';
 import discord from '../images/chate.png';
 import twitter from '../images/twiter.png';
 import github from '../images/git.png';
+import notion from '../images/notion.png';
 
 const Landing = () => {
   const { openConnectModal } = useConnectModal();
@@ -24,15 +25,15 @@ const Landing = () => {
         <div className="splashfooter">
           <div className="splashcol">
             <p><a href="https://discord.gg/WvcEAcg9Aj" target="_blank"><img src={discord} title="discord" alt="discord" /></a></p>
-            <p><a href="#">FAQ</a></p>
           </div>
           <div className="splashcol">
             <p><a href="https://twitter.com/0xSmoothly" target="_blank"><img src={twitter} title="Twitter" alt="Twitter" /></a></p>
-            <p><a href="#">Docs</a></p>
           </div>
           <div className="splashcol">
             <p><a href="https://twitter.com/0xSmoothly" target="_blank"><img src={github} title="Github" alt="Github" /></a></p>
-            <p><a href="#">Read Me</a></p>
+          </div>
+          <div className="splashcol">
+            <p><a href="https://0xsmoothly.notion.site/" target="_blank"><img src={notion} title="Notion" alt="Notion" /></a></p>
           </div>
         </div>
       </div>

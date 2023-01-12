@@ -20,7 +20,7 @@ const Dashboard = () => {
 
   const getValidatorState = async (pubKey: string) => {
     try {
-      const response = await fetch(`http://localhost:4000/validatorstatus/${pubKey}`);
+      const response = await fetch(`https://api-goerli.smoothly.money/validatorstatus/${pubKey}`);
       const data = await response.json();
       return data;
     } catch (err) {
@@ -30,7 +30,7 @@ const Dashboard = () => {
 
   const withdrawals = async (v: string) => {
     try {
-      const response = await fetch(`http://localhost:4000/withdrawals/${v}`);
+      const response = await fetch(`https://api-goerli.smoothly.money/withdrawals/${v}`);
       const data = await response.json();
       return utils.formatEther(data.total_withdrawals);
     } catch (err) {

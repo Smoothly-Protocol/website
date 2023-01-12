@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { utils } from "ethers";
 import { useSigner } from 'wagmi';
 import { hexEncode } from '../utils/hex';
+import { contractAddress } from '../utils/constants';
 import { useContract } from '../utils/constants';
 
 const Register = ({validators, registrants}: {validators: any, registrants: any}) => {
@@ -98,7 +99,7 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
       </div>
       <div className="form-group form-check">
         <input type="checkbox" className="form-check-input" id="feeRecipient"/>
-        <label className="form-check-label" >Please verify the fee recipient is 0xAF4248Dc6F4748CdaF15924685f69fe8B60fa9F7</label>
+        <label className="form-check-label" >Please verify the fee recipient is {contractAddress}</label>
       </div>
     </div>
     <div className="fixebtn"><a href="#" onClick={register} className="uniqbtn">Stake {selectedValidators.length * 0.065} ETH & Register </a></div>

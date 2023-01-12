@@ -13,7 +13,7 @@ const Pool = () => {
 
   const getPoolStats = async () => {
     try {
-      const response = await fetch("http://localhost:4000/poolstats");
+      const response = await fetch("https://api-goerli.smoothly.money/poolstats");
       const data = await response.json();
       setStats(data);
     } catch (err) {
