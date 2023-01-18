@@ -9,9 +9,9 @@ const Balance = ({validators}: {validators: any}) => {
   const addStake = async () => {
     try {
       for(let i = 0; i < validators.length; i++) {
-        if(validators[i].stake < "0.65") {
+        if(validators[i].stake < utils.parseEther("0.065")) {
           const contract = useContract(signer);
-          const amount = utils.parseEther(String(0.65 - Number(validators[i].stake)));
+          const amount = utils.parseEther(String(0.065 - Number(validators[i].stake)));
           const tx = await contract.addStake(validators.id, {value: amount });
           await tx.wait();
           alert("Successfully added stake");

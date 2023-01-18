@@ -95,7 +95,7 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
     <div className="mcrow1 margins1">
       <div className="form-group form-check">
         <input type="checkbox" className="form-check-input" id="stakeInfo"/>
-        <label className="form-check-label" >I've read the Smoothly <a href="">docs</a> and understand how the pool functions</label>
+        <label className="form-check-label" >I've read the Smoothly <a href="https://0xsmoothly.notion.site/">docs</a> and understand how the pool functions</label>
       </div>
       <div className="form-group form-check">
         <input type="checkbox" className="form-check-input" id="feeRecipient"/>
