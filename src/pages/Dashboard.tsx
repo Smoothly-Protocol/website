@@ -52,6 +52,8 @@ const Dashboard = () => {
               pubKey: pubKey,
               rewards: utils.formatUnits(b[i][1], "ether"), 
               slashes: String(b[i][2]),
+              slashFee: 0,
+              slashMiss: 0,
               stake: utils.formatUnits(b[i][3], "ether"),
               id: i,
               state: await getValidatorState(pubKey),
