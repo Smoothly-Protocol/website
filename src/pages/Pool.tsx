@@ -1,4 +1,5 @@
 import React, {useState, useEffect }from 'react';
+import formatEthAmount from '../utils/formatEthAmount';
 
 const Pool = () => {
   const [stats, setStats] = useState({
@@ -32,20 +33,20 @@ const Pool = () => {
 					<table>
 							<thead>
 									<tr>
-											<th>Activated validators</th>
-											<th>Validators awaiting activation</th>
-											<th>Total value this period</th>
-											<th>Total value</th>
-											<th>Average Value</th>
+											<th className="text-center">Activated Validators</th>
+											<th className="text-center">Validators Awaiting Activation</th>
+											<th className="text-center">Total value this period</th>
+											<th className="text-center">Total value</th>
+											<th className="text-center">Average Value</th>
 									</tr>
 							</thead>
 							<tbody>
 									<tr>
-											<td>{stats.activated_validators}</td>
-											<td>{stats.awaiting_activation_validators}</td>
-											<td>{stats.total_value_period}</td>
-											<td>{stats.total_value}</td>
-											<td>{stats.average_value}</td>
+											<td className="text-center">{stats.activated_validators}</td>
+											<td className="text-center">{stats.awaiting_activation_validators}</td>
+											<td className="text-center">{formatEthAmount(stats.total_value_period.toString())}</td>
+											<td className="text-center">{formatEthAmount(stats.total_value.toString())}</td>
+											<td className="text-center">{formatEthAmount(stats.average_value.toString())}</td>
 									</tr>
 							</tbody>
 					</table>
@@ -56,16 +57,16 @@ const Pool = () => {
 					<table>
 							<thead>
 									<tr>
-											<th>Fee Recipient Slashings</th>
-											<th>Missed Proposal Slashings</th>
-											<th>Total value from slashings</th>
+											<th className="text-center">Fee Recipient Slashings</th>
+											<th className="text-center">Missed Proposal Slashings</th>
+											<th className="text-center">Total value from slashings</th>
 									</tr>
 							</thead>
 							<tbody>
 									<tr>
-											<td>{stats.total_fee}</td>
-											<td>{stats.total_miss}</td>
-										  <td>{(stats.total_fee * 0.05) + (stats.total_miss * 0.015)}</td>
+											<td className="text-center">{stats.total_fee}</td>
+											<td className="text-center">{stats.total_miss}</td>
+										  <td className="text-center">{formatEthAmount(((stats.total_fee * 0.05) + (stats.total_miss * 0.015).toString()))}</td>
 									</tr>
 							</tbody>
 					</table>

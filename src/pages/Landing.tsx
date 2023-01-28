@@ -1,7 +1,7 @@
 import React from 'react';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
-import logo from '../images/logo.jpg';
+import logo from '../images/smoothly_web_text.png';
 import discord from '../images/chate.png';
 import twitter from '../images/twiter.png';
 import github from '../images/git.png';
@@ -14,7 +14,7 @@ const Landing = () => {
       <div className="fullbodybg">
         {/* Logo and Button */}
         <div className="logostyle">
-          <p><img src={logo} title="MEV Smoothing Pool" alt="MEV Smoothing Pool" /></p>
+          <p><img style={{ width: 500 }} src={logo} title="MEV Smoothing Pool" alt="MEV Smoothing Pool" /></p>
           <p className="esbtnwidth">
           <button onClick={openConnectModal} className="entersmoothly" type="button">Enter Smoothly 
           <i className="fa fa-angle-right" aria-hidden="true"></i>

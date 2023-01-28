@@ -14,6 +14,9 @@ import "./css/style.css";
 import "./css/bootstrap.min.css";
 import "./css/font-awesome.min.css";
 import './css/rainbowkit.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+// Bootstrap Bundle JS
+import "bootstrap/dist/js/bootstrap.bundle.min";
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
