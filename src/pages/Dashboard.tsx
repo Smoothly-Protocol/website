@@ -202,16 +202,13 @@ const Dashboard = () => {
     }
 
     // Load Initial Validators
-    console.log(signer != null, ' grabbing initial data')
-
     if(signer != null) {
       getValidators();
-      console.log('grabbing initial data')
-
+      console.log('grabbing initial data'); // will remove after testing
     }
     const updateDataInterval = setInterval(() => {
       if(signer != null) {
-        console.log('grabbing data')
+        console.log('refreshing data'); // will remove after testing
         getValidators();
       }
     }, 60000);
