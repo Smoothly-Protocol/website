@@ -64,8 +64,8 @@ const testValidators = [
     slashes: "0",
     stake: "0.065",
     state: {
-      status: "Forced Exit",
-      standing: "N/A"
+      status: "Active",
+      standing: "Forced Exit"
     },
     withdrawals: "0.0"
   },
@@ -78,8 +78,8 @@ const testValidators = [
     slashes: "0",
     stake: "0.065",
     state: {
-      status: "Pending",
-      standing: "Forced Exit"
+      status: "Awaiting Activation",
+      standing: "N/A"
     },
     withdrawals: "0.0"
   },
@@ -92,7 +92,7 @@ const testValidators = [
     slashes: "0",
     stake: "0.065",
     state: {
-      status: "Forced Exit",
+      status: "Awaiting Activation",
       standing: "N/A"
     },
     withdrawals: "0.0"
@@ -106,7 +106,7 @@ const testValidators = [
     slashes: "0",
     stake: "0.065",
     state: {
-      status: "Pending",
+      status: "Active",
       standing: "Forced Exit"
     },
     withdrawals: "0.0"

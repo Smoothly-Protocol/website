@@ -112,11 +112,6 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
                 </span>
               </td>
               <td className="text-center">
-                {validator.state.status === 'Awaiting Activation' ? (
-                  <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={standingPopover(validator.state.standing)}>
-                    <span className="cursor-pointer">❓</span>
-                  </OverlayTrigger>
-                ) : (
                     <span className={`badge ${standingBadgeColor(validator.state.standing)} text-light`}>
                       {validator.state.standing}{' '}
                         {validator.state.standing !== "All Good" &&
@@ -127,8 +122,6 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
                           </OverlayTrigger>
                         }
                     </span>
-                    )
-                  }
               </td>
             </tr>
             ))}
@@ -144,6 +137,7 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
                 <tr>
                   <th className="text-center">Public Key</th>
                   <th className="text-center">Status</th>
+                  <th className="text-center">Join the Pool!</th>
                 </tr>
               </thead>
               <tbody>
@@ -176,7 +170,12 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
             </div>
             <div className="form-group form-check">
               <input type="checkbox" className="form-check-input" id="feeRecipient"/>
-              <label className="form-check-label">Please verify the fee recipient is {contractAddress.slice(0,18)}....{contractAddress.slice(80)}</label>
+              <label className="form-check-label">
+                <span className="d-flex align-middle gap-2">
+                  Please verify the fee recipient is {contractAddress}
+                  <i onClick={() =>  navigator.clipboard.writeText(contractAddress)} className="copy-button fa fa-clone fa-lg"></i>
+                </span>
+              </label>
             </div>
           </div>
         </div>)

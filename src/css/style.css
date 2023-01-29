@@ -39,6 +39,9 @@ h1,h2,h3,h4,h5,h6{
 	align-items: center;
 	border: none;
 }
+.pl-ch {
+	padding-left: calc(10px + 2ch) !important;
+}
 .entersmoothly:hover{
 	background: linear-gradient(-90deg, rgba(188,81,154,1) 0%, rgba(114,63,147,1) 100%);
 	color: #fff;

@@ -92,8 +92,8 @@ const Balance = ({validators}: {validators: any}) => {
           <table>
             <thead>
               <tr>
-              <th className="text-center">Pub Key</th>
-              <th className="text-center">Available for Withdrawal</th>
+              <th className="text-center">Public Key</th>
+              <th className="text-center">Unclaimed Rewards</th>
               <th className="text-center">Claimed Rewards</th>
               <th className="text-center">Days till Rebalance</th>
               <th className="text-center">Status</th>
@@ -103,8 +103,9 @@ const Balance = ({validators}: {validators: any}) => {
               {validators.map((validator: any, key: any) => (
               <tr key={key}>
                 <td className='d-flex align-middle'>{`${validator.pubKey.slice(0,19)}...`}<i onClick={() =>  navigator.clipboard.writeText(validator.pubKey)} className="copy-button fa fa-clone fa-lg"></i></td>
-                <td className="text-center">
-                  {validator.state.status !== "Awaiting Activation" ? (formatEthAmount(validator.rewards)) : (
+                <td className={`text-center ${validator.state.status !== "Awaiting Activation" ? '' : 'pl-ch'}`}>
+                  {formatEthAmount(validator.rewards)}
+                  {validator.state.status !== "Awaiting Activation" ? null : (
                     <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={popover}>
                       <span>
                         {<span className="cursor-pointer">❗️</span>}
@@ -129,7 +130,7 @@ const Balance = ({validators}: {validators: any}) => {
           <table>
             <thead>
               <tr>
-              <th className="text-center">Pub Key</th>
+              <th className="text-center">Public Key</th>
               <th className="text-center">Deposit Balance</th>
               <th className="text-center">Penalties</th>
               <th className="text-center">Status</th>
@@ -148,23 +149,16 @@ const Balance = ({validators}: {validators: any}) => {
                   </span>
                 </td>
                 <td className="text-center">
-                  {validator.state.status === 'Awaiting Activation' ? (
-                    <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={standingPopover(validator.state.standing)}>
-                      <span className="cursor-pointer">❓</span>
-                    </OverlayTrigger>
-                    ) : (
-                      <span className={`badge ${standingBadgeColor(validator.state.standing)} text-light`}>
-                        {validator.state.standing}{' '}
-                          {validator.state.standing !== "All Good" &&
-                            <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={standingPopover(validator.state.standing)}>
-                              <span className="text-light">
-                                <i className="fa fa-info-circle fa-md" aria-hidden="true"></i>
-                              </span>
-                            </OverlayTrigger>
-                          }
-                      </span>
-                      )
-                    }
+                  <span className={`badge ${standingBadgeColor(validator.state.standing)} text-light`}>
+                    {validator.state.standing}{' '}
+                      {validator.state.standing !== "All Good" &&
+                        <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={standingPopover(validator.state.standing)}>
+                          <span className="text-light">
+                            <i className="fa fa-info-circle fa-md" aria-hidden="true"></i>
+                          </span>
+                        </OverlayTrigger>
+                      }
+                  </span>
                 </td>
               </tr>
               ))}

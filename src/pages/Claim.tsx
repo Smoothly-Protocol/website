@@ -3,6 +3,7 @@ import { useSigner } from 'wagmi';
 import { useContract } from '../utils/constants';
 import formatEthAmount from '../utils/formatEthAmount';
 import { OverlayTrigger, Popover, Modal, Button } from 'react-bootstrap';
+import { statusBadgeColor } from '../utils/badgeColors';
 
 const Claim = ({validators}: {validators: any}) => {
 	const { data: signer } = useSigner();
@@ -44,7 +45,7 @@ const Claim = ({validators}: {validators: any}) => {
   }
 
   const standingPopover = (standing: string) => {
-    let message;
+    let message = "";
     if (standing === "Okay") {
       message = "Verify your validator configuration, you've missed a proposal";
     }
@@ -56,8 +57,8 @@ const Claim = ({validators}: {validators: any}) => {
       message = `You proposed a block with the wrong fee recipient, 0.5 ETH has been taken from your insurance deposit and 
                   you have been removed from the pool index`;
     }
-    else {
-      message = "Only Active validators are given a standing, awaiting block proposal"
+    else if (standing === "N/A") {
+      message = "Only Active validators can claim rewards, awaiting block proposal"
     }
     return (
       <Popover id="popover-basic">
@@ -71,14 +72,15 @@ const Claim = ({validators}: {validators: any}) => {
   return (
       <div className="tab-pane" id="tabs-3" role="tabpanel">
         <div className="fullhegigth">
-          <h2>Active Validators</h2>
+          <h2>Registered Validators</h2>
           <div className="mcrow">
             <table>
               <thead>
                 <tr>
-                  <th className="text-center">Pub Key</th>
+                  <th className="text-center">Public Key</th>
                   <th className="text-center">Unclaimed Rewards</th>
-                  <th>&nbsp;</th>
+                  <th className="text-center">Status</th>
+                  <th className="text-center">Claim</th>
               </tr>
               </thead>
               <tbody>
@@ -92,6 +94,11 @@ const Claim = ({validators}: {validators: any}) => {
                   <tr key={key}>
                     <td className='d-flex gap-2 align-middle text-center'>{`${validator.pubKey.slice(0,19)}...`}<i onClick={() =>  navigator.clipboard.writeText(validator.pubKey)} className="copy-button fa fa-clone fa-lg"></i></td>
                     <td className="text-center">{formatEthAmount(validator.rewards)}</td>
+                    <td className="text-center">
+                  <span className={`badge ${statusBadgeColor(validator.state.status)} text-light`}>
+                    {validator.state.status}
+                  </span>
+                </td>
                     <td className="text-center">
                       {validator.state.status === "Awaiting Activation" ? (
                         <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={standingPopover(validator.state.standing)}>

@@ -31,7 +31,7 @@ const Exit = ({validators}: {validators: any}) => {
             <table>
               <thead>
                 <tr>
-                  <th>Pub Key</th>
+                  <th>Public Key</th>
                   <th>&nbsp;</th>
                 </tr>  
               </thead>
