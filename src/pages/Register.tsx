@@ -105,7 +105,7 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
           <tbody>
             {validators.map((validator: any, key: any) => (
             <tr key={key}>
-              <td className='d-flex align-middle'>{`${validator.pubKey.slice(0,19)}...`}<i onClick={() =>  navigator.clipboard.writeText(validator.pubKey)} className="copy-button fa fa-clone fa-lg"></i></td>
+              <td className='d-flex align-middle'>{`${validator.pubKey.slice(0,19)}...`}<i onClick={() => navigator.clipboard.writeText(validator.pubKey)} className="copy-button fa fa-clone fa-lg"></i></td>
               <td className="text-center">
                 <span className={`badge ${statusBadgeColor(validator.state.status)} text-light`}>
                   {validator.state.status}
@@ -143,7 +143,7 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
               <tbody>
                 {registrants.map((validator: any, key: any) => (
                 <tr key={key}>
-                  <td className='d-flex align-middle'>{`${validator.slice(0,19)}...`}<i onClick={() =>  navigator.clipboard.writeText(validator)} className="copy-button fa fa-clone fa-lg"></i></td>
+                  <td className='d-flex align-middle'>{`${validator.slice(0,19)}...`}<i onClick={() => navigator.clipboard.writeText(validator)} className="copy-button fa fa-clone fa-lg"></i></td>
                   <td className="text-center"><span className="badge badge-secondary text-light">Inactive</span></td>
                   <td className="text-center">
                     <form><input 
