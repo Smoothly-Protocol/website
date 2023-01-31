@@ -215,7 +215,7 @@ const Dashboard = () => {
 
     return () => clearInterval(updateDataInterval); 
     
-  }, []);
+  }, [signer]);
 
 return (
   <div id="bgcolorchange">
