@@ -217,7 +217,7 @@ const Dashboard = () => {
 
     return () => clearInterval(updateDataInterval); 
     
-  }, []);
+  }, [signer]);
 
 
 return (
