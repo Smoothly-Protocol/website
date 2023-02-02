@@ -15,8 +15,11 @@ export function standingBadgeColor(standing: string) {
   else if (standing === "Okay") {
     return "badge-warning";
   }
+  else if (standing === "Forced Exit") {
+    return "badge-dark";
+  }
   else if (standing === "N/A") {
-    return "badge-info"
+    return "badge-info";
   }
   else {
     return "badge-danger";

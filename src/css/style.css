@@ -3,6 +3,9 @@
 html,body,p,a,strong,em{
 	font-family: 'Nunito', sans-serif !important;
 }
+html, body {
+	height: 100%;
+}
 h1,h2,h3,h4,h5,h6{
 	font-family: 'Nunito', sans-serif !important;
 }
@@ -94,6 +97,7 @@ h1,h2,h3,h4,h5,h6{
 }
 .menubar {
 	justify-content: space-evenly;
+	height: auto;
 }
 .menubar ul.nav {
 	list-style: none;
@@ -141,6 +145,10 @@ h1,h2,h3,h4,h5,h6{
 	justify-content: center;
 	align-items: center;
 }
+
+.headercol {
+	align-items: center;
+}
 .headercol:last-child ul li .uniqbtn:hover{
 	background: linear-gradient(-90deg, rgba(188,81,154,1) 0%, rgba(114,63,147,1) 100%);
 	color: #fff;
@@ -181,13 +189,15 @@ button:focus{
 	outline: 0px !important
 }
 .maincontent {
-    min-height: 100vh;
+    /* min-height: 100vh; */
     width: 1200px;
     margin: 0 auto;
     padding-top: 100px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		padding-bottom: 115px;
+
 }
 .mcrow{
 	box-shadow: inset 4px -4px 3px #ffffff, inset 8px -8px 60px -5px #f1e9ec, inset -7px 7px 5px -4px rgb(174 174 192 / 40%);
@@ -280,6 +290,7 @@ img.darkmode{
 	color: #fff;
 	text-decoration: none;
 }
+
 
 .globlefooter{
 	display: flex;
@@ -384,6 +395,18 @@ i {
 	display: flex;
 	flex-direction: column;
 	position: relative;
+}
+
+.badge-success {
+	background-color: #add29f !important;
+}
+
+.badge-danger {
+	background-color: #f4c4c5 !important;
+}
+
+.badge-warning {
+	background-color: #ffe191 !important;
 }
 
 /***************** Media Query Code Start *******************/

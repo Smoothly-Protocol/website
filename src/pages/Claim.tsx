@@ -4,15 +4,18 @@ import { useContract } from '../utils/constants';
 import formatEthAmount from '../utils/formatEthAmount';
 import { OverlayTrigger, Popover, Modal, Button } from 'react-bootstrap';
 import { statusBadgeColor } from '../utils/badgeColors';
+import { HashLoader } from 'react-spinners';
 
-const Claim = ({validators}: {validators: any}) => {
+const Claim = ({validators, refreshData}: {validators: any, refreshData: Function}) => {
 	const { data: signer } = useSigner();
 
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalMessage, setModalMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const claim = async () => {
+    setLoading(true);
     try {
 			let input: any = document.getElementsByClassName("validator-claim");
 			let arg: Array<number> = [];
@@ -30,6 +33,8 @@ const Claim = ({validators}: {validators: any}) => {
       handleModalShow("Error", "No rewards are able to be claimed. Make sure you have unclaimed rewards before attempting to claim.")
       console.log(err);
     }
+    refreshData();
+    setLoading(false);
   };
 
   const handleModalClose = () => {
@@ -115,7 +120,23 @@ const Claim = ({validators}: {validators: any}) => {
               </tbody>
             </table>
           </div>
-          <div className="fixebtn"><a href="#" onClick={claim} className="uniqbtn">Claim Rewards</a></div>
+          {loading ? 
+            (
+              <div className="d-flex flex-row fixebtn justify-content-center">
+                <HashLoader
+                  color={'#bc519a'}
+                  loading={loading}
+                  size={50}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                />
+              </div>
+            )
+            :
+            (
+              <div className="fixebtn"><a href="#" onClick={claim} className="uniqbtn">Claim Rewards</a></div>
+            )
+          }
         </div>
         <Modal show={showModal} onHide={handleModalClose} centered>
           <Modal.Header closeButton>

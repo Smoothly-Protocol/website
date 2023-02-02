@@ -1,16 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSigner } from 'wagmi';
 import { useContract } from '../utils/constants';
+import { HashLoader } from 'react-spinners';
+import { OverlayTrigger, Popover, Modal, Button } from 'react-bootstrap';
 
-const Exit = ({validators}: {validators: any}) => {
+const Exit = ({validators, refreshData}: {validators: any, refreshData: Function}) => {
 	const { data: signer } = useSigner();
+  
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+
+  const handleModalClose = () => {
+    setShowModal(false);
+  }
+
+  const handleModalShow = (title: string, message: string) => {
+    setModalTitle(title);
+    setModalMessage(message);
+    setShowModal(true);
+  }
 
   const exit = async () => {
+    setLoading(true);
     try {
 			let input: any = document.getElementsByClassName("validator-exit");
 			let arg: Array<number> = [];
 			for(let i = 0; i < input.length; i++) {
-				if(input[i].checked) {
+				if (input[i].checked) {
 					arg.push(Number(input[i].value));
 				}
 			}
@@ -18,12 +36,18 @@ const Exit = ({validators}: {validators: any}) => {
       const contract = useContract(signer);
 			const tx = await contract.exit(arg);
 			await tx.wait();
-			alert("Successfully exited protocol for selected validators");
+      setLoading(false);
+			// alert("Successfully exited protocol for selected validators");
+      handleModalShow("Success", "Exited protocol for selected validators");
     } catch(err) {
       console.log(err);
+      handleModalShow("Error", "There was an error exiting protocol for selected validators");
     }
+    refreshData();
+    setLoading(false);
   };
-  return(
+
+  return (
       <div className="tab-pane" id="tabs-4" role="tabpanel">
         <div className="fullhegigth">
           <h2>Registered Validators</h2>
@@ -45,8 +69,35 @@ const Exit = ({validators}: {validators: any}) => {
               </tbody>
             </table>
           </div>
-          <div className="fixebtn"><a href="#" className="uniqbtn" onClick={exit}>Exit Pool</a></div>
+          {validators.length > 0 && (loading ? 
+            (
+              <div className="d-flex flex-row fixebtn justify-content-center">
+                <HashLoader
+                  color={'#bc519a'}
+                  loading={loading}
+                  size={50}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                />
+              </div>
+            )
+            :
+            (
+              <div className="fixebtn"><a href="#" className="uniqbtn" onClick={exit}>Exit Pool</a></div>
+            )
+          )}
         </div>
+        <Modal show={showModal} onHide={handleModalClose} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>{modalTitle}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {modalMessage}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={handleModalClose}>Close</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
   );
 }

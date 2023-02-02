@@ -8,19 +8,21 @@ import { statusBadgeColor, standingBadgeColor } from '../utils/badgeColors';
 import { HashLoader } from 'react-spinners';
 import { OverlayTrigger, Popover, Modal, Button } from 'react-bootstrap';
 
-
-const Register = ({validators, registrants}: {validators: any, registrants: any}) => {
+const Register = ({validators, registrants, refreshData}: {validators: any, registrants: any, refreshData: Function}) => {
 	const { data: signer } = useSigner();
   const [selectedValidators, setSelectedValidators] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
   const [modalMessage, setModalMessage] = useState("");
 
   const handleModalClose = () => {
     setShowModal(false);
+    setLoading(false);
   }
 
-  const handleModalShow = (message: string) => {
+  const handleModalShow = (title: string, message: string) => {
+    setModalTitle(title);
     setModalMessage(message);
     setShowModal(true);
   }
@@ -49,20 +51,21 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
 						value: utils.parseEther("0.065").mul(selectedValidators.length)
 					});
 					await tx.wait();
-          handleModalShow("Successfully registered on contract, still need to verify");
+          handleModalShow("Success", "Registered on contract, still need to verify");
 					// alert("Successfully registered on contract, still need to verify");
 				} else {
 					// alert("No validators selected");
-          handleModalShow("No validators selected")
+          handleModalShow("Error", "No validators selected");
 				}
 			} else {
-        handleModalShow("Please make sure you are aware of all our guidelines first");
+        handleModalShow("Error", "Please make sure you are aware of all our guidelines first");
 				// alert("Please make sure you are aware of all our guidelines first");
 			}
-      setLoading(false);
 		} catch(err) {
 			console.log(err);
-		}	
+		}
+    setLoading(false);
+    refreshData();
 	}
 
   const standingPopover = (standing: string) => {
@@ -179,29 +182,30 @@ const Register = ({validators, registrants}: {validators: any, registrants: any}
             </div>
           </div>
         </div>)
-        }
-      {loading ? 
-        (
-          <div className="d-flex flex-row fixebtn justify-content-center">
-            <HashLoader
-              color={'green'}
-              loading={loading}
-              size={50}
-              aria-label="Loading Spinner"
-              data-testid="loader"
-            />
-          </div>
-        )
-        :
-        (<div className="fixebtn">
-          <a href="#" onClick={register} className="uniqbtn">
-            Deposit {selectedValidators.length * 0.065} ETH & Register
-          </a>
-        </div>)
       }
+      {registrants.length > 0 && (
+        loading ? 
+          (
+            <div className="d-flex flex-row fixebtn justify-content-center">
+              <HashLoader
+                color={'#bc519a'}
+                loading={loading}
+                size={50}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+            </div>
+          )
+          :
+          (<div className="fixebtn">
+            <a href="#" onClick={register} className="uniqbtn">
+              Deposit {selectedValidators.length * 0.065} ETH & Register
+            </a>
+          </div>)
+        )}
         <Modal show={showModal} onHide={handleModalClose} centered>
           <Modal.Header closeButton>
-            <Modal.Title>Error</Modal.Title>
+            <Modal.Title>{modalTitle}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {modalMessage}

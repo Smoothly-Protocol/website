@@ -112,10 +112,10 @@ const testValidators = [
     withdrawals: "0.0"
   }
 ]
-const testRegistrants = [
+const testRegistrants: any[] = [
   "0xa394dec8e73670bc77777734d431c28557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
-  "0xa394dec8e73670bc77777734d431c28557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
-  "0xa394dec8e73670bc77777734d431c28557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
+  // "0xa394dec8e73670bc77777734d431c28557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
+  // "0xa394dec8e73670bc77777734d431c28557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
 ]
 const Dashboard = () => {
   const { address } = useAccount();
@@ -143,88 +143,91 @@ const Dashboard = () => {
     }
   }
 
-  useEffect(() => {
-    const getBalance = async () => {
-      try {
-        const contract = useContract(signer);
-        const b = await contract.getValidators();
-        let _validators: any = [];
-        for(let i = 0; i < b.length; i++) {
-          if(b[i][0] !== "0x") {
-            const pubKey = hexToChar(b[i][0]);
-            _validators.push({
-              pubKey: pubKey,
-              rewards: utils.formatUnits(b[i][1], "ether"), 
-              slashes: String(b[i][2]),
-              slashFee: 0,
-              slashMiss: 0,
-              stake: utils.formatUnits(b[i][3], "ether"),
-              id: i,
-              state: await getValidatorState(pubKey),
-              withdrawals: await withdrawals(pubKey)
-            });	
-          }
+  const getBalance = async () => {
+    try {
+      const contract = useContract(signer);
+      const b = await contract.getValidators();
+      let _validators: any = [];
+      for(let i = 0; i < b.length; i++) {
+        if(b[i][0] !== "0x") {
+          const pubKey = hexToChar(b[i][0]);
+          _validators.push({
+            pubKey: pubKey,
+            rewards: utils.formatUnits(b[i][1], "ether"), 
+            slashes: String(b[i][2]),
+            slashFee: 0,
+            slashMiss: 0,
+            stake: utils.formatUnits(b[i][3], "ether"),
+            id: i,
+            state: await getValidatorState(pubKey),
+            withdrawals: await withdrawals(pubKey)
+          });	
         }
-      return _validators;
-      } catch (err) {
-        console.log(err);
       }
+    return _validators;
+    } catch (err) {
+      console.log(err);
     }
+  }
 
-    const getValidators = async () => {
-      try {
-        const url = `https://goerli.beaconcha.in/api/v1/validator/eth1/${address}`;
-        const res = await fetch(url);
-        const { data } = await res.json();
-        const registered = await getBalance();
+  const getValidators = async () => {
+    try {
+      const url = `https://goerli.beaconcha.in/api/v1/validator/eth1/${address}`;
+      const res = await fetch(url);
+      const { data } = await res.json();
+      const registered = await getBalance();
 
-        if(data.length > 0) {
-          setValidators([]);
-          setRegValidators([]);
-          data.map((validator: any) => {
-              if(validator.validatorindex != null) {
-                let flag = false;
-                registered.map((val: any) => {
-                  if(validator.publickey === val.pubKey) {
-                    setValidators(current => [...current, val]);
-                    flag = true;
-                  }
-                });		
-                flag ? null : setRegValidators(current => [...current, validator.publickey]);
-              }
-          });
-        } else {
-          setValidators([]);
-        }
-      } catch(err) {
-        console.log(err);
+      if(data.length > 0) {
+        setValidators([]);
+        setRegValidators([]);
+        data.map((validator: any) => {
+            if(validator.validatorindex != null) {
+              let flag = false;
+              registered.map((val: any) => {
+                if(validator.publickey === val.pubKey) {
+                  setValidators(current => [...current, val]);
+                  flag = true;
+                }
+              });		
+              flag ? null : setRegValidators(current => [...current, validator.publickey]);
+            }
+        });
+      } else {
+        setValidators([]);
       }
+    } catch(err) {
+      console.log(err);
     }
+  }
 
-    // Load Initial Validators
+  const refreshData = () => {
+    console.log('refreshing data');
     if(signer != null) {
       getValidators();
-      console.log('grabbing initial data'); // will remove after testing
+      console.log('refreshing data'); // will remove after testing
     }
+  }
+
+  useEffect(() => {
+    // Load Initial Validators
+    refreshData();
     const updateDataInterval = setInterval(() => {
-      if(signer != null) {
-        console.log('refreshing data'); // will remove after testing
-        getValidators();
-      }
+      refreshData();
     }, 60000);
 
     return () => clearInterval(updateDataInterval); 
     
   }, []);
 
+
 return (
-  <div id="bgcolorchange">
+  <div id="bgcolorchange" className="d-flex flex-column justify-content-center">
     <Header />
     <div className="tab-content maincontent">
-      <Register registrants={regValidators} validators={validators}/>
-      <Balance validators={validators}/>
-      <Claim validators={validators}/>
-      <Exit validators={validators}/>
+      <Register refreshData={refreshData} registrants={regValidators} validators={validators}/>
+      <Balance refreshData={refreshData} validators={validators}/>
+      <Claim refreshData={refreshData} validators={validators}/>
+      <Exit refreshData={refreshData} validators={validators}/>
       <Pool />
     </div>
     <Footer />

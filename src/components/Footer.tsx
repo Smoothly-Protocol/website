@@ -6,7 +6,7 @@ import github from '../images/git.png';
 
 const Footer = () => {
   return(
-		<footer className="footerdown">
+		<footer className="footerdown footer fixed-bottom">
 		<div className="globlefooter">
 			<div className="footercol">
 				<ul>

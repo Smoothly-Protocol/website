@@ -6,11 +6,14 @@ import { useContract } from '../utils/constants';
 import { statusBadgeColor, standingBadgeColor } from '../utils/badgeColors';
 import formatEthAmount from '../utils/formatEthAmount';
 import { OverlayTrigger, Popover, Button, Modal } from 'react-bootstrap';
+import { HashLoader } from 'react-spinners';
 
-const Balance = ({validators}: {validators: any}) => {
+const Balance = ({validators, refreshData}: {validators: any, refreshData: Function}) => {
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
+  const [loading, setLoading] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  
   const handleModalClose = () => {
     setShowModal(false);
   }
@@ -22,6 +25,7 @@ const Balance = ({validators}: {validators: any}) => {
   }
 	const { data: signer } = useSigner();
   const addStake = async () => {
+    setLoading(true);
     try {
       for(let i = 0; i < validators.length; i++) {
         if(utils.parseEther(validators[i].stake).lt(utils.parseEther("0.065"))) {
@@ -31,16 +35,18 @@ const Balance = ({validators}: {validators: any}) => {
           await tx.wait();
           // alert("Successfully added stake");
           handleModalShow("Success", "Your stake was added to the pool!")
-
         }
         else {
           handleModalShow("Error", "Something went wrong. Your stake was not added to the pool.")
         }
       } 
+      setLoading(false);
     } catch(err) {
       handleModalShow("Error", "Something went wrong. Your stake was not added to the pool.")
       console.log(err);
     }
+    refreshData();
+    setLoading(false);
   }
 
   const daysTillRebalance = () => {
@@ -86,7 +92,7 @@ const Balance = ({validators}: {validators: any}) => {
   };
 
   return (
-      <div className="tab-pane" id="tabs-2" role="tabpanel">
+      <div className="tab-pane balance-page" id="tabs-2" role="tabpanel">
         <h2>Rewards</h2>
         <div className="mcrow">
           <table>
@@ -165,7 +171,25 @@ const Balance = ({validators}: {validators: any}) => {
             </tbody>
           </table>
           </div>
-        <div className="fixebtn" onClick={addStake}><a href="#" className="uniqbtn">Top Up Deposit</a></div>
+          {loading ? 
+            (
+              <div className="d-flex flex-row fixebtn justify-content-center">
+                <HashLoader
+                  color={'#bc519a'}
+                  loading={loading}
+                  size={50}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                />
+              </div>
+            )
+            :
+            (
+              <div className="fixebtn" onClick={addStake}>
+                <a href="#" className="uniqbtn">Top Up Deposit</a>
+              </div>
+            )
+          }
         <Modal show={showModal} onHide={handleModalClose} centered>
           <Modal.Header closeButton>
             <Modal.Title>{modalTitle}</Modal.Title>
