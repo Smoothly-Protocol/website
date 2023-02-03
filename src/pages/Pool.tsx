@@ -66,7 +66,7 @@ const Pool = () => {
 									<tr>
 											<td className="text-center">{stats.total_fee}</td>
 											<td className="text-center">{stats.total_miss}</td>
-										  <td className="text-center">{formatEthAmount(((stats.total_fee * 0.05) + (stats.total_miss * 0.015).toString()))}</td>
+										  <td className="text-center">{formatEthAmount(((stats.total_fee * 0.05) + (stats.total_miss * 0.015)).toString())}</td>
 									</tr>
 							</tbody>
 					</table>

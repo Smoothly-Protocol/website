@@ -35,9 +35,6 @@ const Balance = ({validators, refreshData}: {validators: any, refreshData: Funct
           await tx.wait();
           handleModalShow("Success", "Your stake was added to the pool!")
         }
-        else {
-          handleModalShow("Error", "Something went wrong. Your stake was not added to the pool.")
-        }
       } 
       setLoading(false);
     } catch(err) {

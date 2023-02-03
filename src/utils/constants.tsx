@@ -1,10 +1,10 @@
 import { Contract, Signer } from "ethers";
 
-export const contractAddress = "0x2d6c080be6d0533d706ee38ebc843eac102c1ebc";
+export const contractAddress = "0x8d3b2dc0c22a2bdc17975c065a65637bd9d58f6b";
 const abi = [
   "function registerBulk(bytes[] memory pubKeys) external payable",
   "function withdrawRewards(uint[] memory validator_ids) public",
-  "function getValidators() external view returns(tuple(bytes,uint256,uint256,uint256)[])",
+  "function getValidators() external view returns(tuple(bytes,uint256,uint256,uint256,uint256,bool)[])",
   "function exit(uint[] memory validator_ids) external",
   "function getRebalanceRewards() external view returns(uint)",
   "function totalStake() external view returns(uint)",

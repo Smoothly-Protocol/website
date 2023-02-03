@@ -24,11 +24,14 @@ const Claim = ({validators, refreshData}: {validators: any, refreshData: Functio
 					arg.push(Number(input[i].value));
 				}
 			}
+      if(arg.length < 1) {
+        setLoading(false);
+        return handleModalShow("Error", "No validators selected.")
+      }
       const contract = useContract(signer);
 			const tx = await contract.withdrawRewards(arg);
 			await tx.wait();
-      handleModalShow("Success", "Exited protocol for selected validators!")
-			// alert("Successfully exited protocol for selected validators");
+      handleModalShow("Success", "Rewards claimed successfully.")
     } catch(err) {
       handleModalShow("Error", "No rewards are able to be claimed. Make sure you have unclaimed rewards before attempting to claim.")
       console.log(err);

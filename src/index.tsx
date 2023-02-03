@@ -23,9 +23,8 @@ const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 
 const { chains, provider } = configureChains(
-  [goerli, polygon, optimism, arbitrum],
+  [goerli],
   [
-    //alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
     publicProvider()
   ]
 );

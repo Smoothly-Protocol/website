@@ -150,14 +150,15 @@ const Dashboard = () => {
       let _validators: any = [];
       for(let i = 0; i < b.length; i++) {
         if(b[i][0] !== "0x") {
+          console.log(b[i]);
           const pubKey = hexToChar(b[i][0]);
           _validators.push({
             pubKey: pubKey,
             rewards: utils.formatUnits(b[i][1], "ether"), 
-            slashes: String(b[i][2]),
-            slashFee: 0,
-            slashMiss: 0,
-            stake: utils.formatUnits(b[i][3], "ether"),
+            slashes: String(b[i][2].add(b[i][3])),
+            slashFee: String(b[i][2]),
+            slashMiss: String(b[i][3]),
+            stake: utils.formatUnits(b[i][4], "ether"),
             id: i,
             state: await getValidatorState(pubKey),
             withdrawals: await withdrawals(pubKey)

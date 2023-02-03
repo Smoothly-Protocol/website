@@ -67,7 +67,7 @@ const Header = () => {
 				<div className="headercol">
 					<ul className="inventory-items">
 						<li><button id="sellButton" onClick={toggleBg}><i className="fa fa-moon-o" aria-hidden="true"></i><img src={sun} className="darkmode"/></button></li>
-						<ConnectButton/>
+						<ConnectButton chainStatus="none"/>
 					</ul>
 				</div>
 			</div>
