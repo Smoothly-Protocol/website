@@ -19,7 +19,7 @@ const Footer = () => {
 				<ul>
 					<li><a href="https://0xsmoothly.notion.site/0xsmoothly/Frequently-Asked-Questions-54c3d9fe92e5496f8d8252af88f2b40f" target="_blank">FAQ</a></li>
 					<li><a href="https://0xsmoothly.notion.site/" target="_blank">Docs</a></li>
-					<li><a href="https://0xsmoothly.notion.site/0xsmoothly/How-To-Guide-5b1e7fcf67594d8ba3573cf76682706a" target="_blank">Read Me</a></li>
+					<li><a href="https://0xsmoothly.notion.site/0xsmoothly/How-To-Guide-5b1e7fcf67594d8ba3573cf76682706a" target="_blank">Guide</a></li>
 				</ul>
 			</div>
 		</div>

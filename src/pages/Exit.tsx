@@ -27,20 +27,23 @@ const Exit = ({validators, refreshData}: {validators: any, refreshData: Function
     try {
 			let input: any = document.getElementsByClassName("validator-exit");
 			let arg: Array<number> = [];
+      // Get selected Validators
 			for(let i = 0; i < input.length; i++) {
 				if (input[i].checked) {
 					arg.push(Number(input[i].value));
 				}
 			}
-			console.log(arg);
+      // Handle 0 selected 
+      if(arg.length < 1) {
+        setLoading(false);
+        return handleModalShow("Error", "No validators selected");
+      }
       const contract = useContract(signer);
 			const tx = await contract.exit(arg);
 			await tx.wait();
       setLoading(false);
-			// alert("Successfully exited protocol for selected validators");
       handleModalShow("Success", "Exited protocol for selected validators");
     } catch(err) {
-      console.log(err);
       handleModalShow("Error", "There was an error exiting protocol for selected validators");
     }
     refreshData();
@@ -62,7 +65,7 @@ const Exit = ({validators, refreshData}: {validators: any, refreshData: Function
               <tbody>
                 {validators.map((validator: any, key: any) => (
                 <tr key={key}>
-                  <td>{`${validator.pubKey.slice(0,18)}....${validator.pubKey.slice(80)}`}</td>
+                  <td className='d-flex align-middle'>{`${validator.pubKey.slice(0,19)}...`}<i onClick={() => navigator.clipboard.writeText(validator.pubKey)} className="copy-button fa fa-clone fa-lg"></i></td>
                   <td><form><input type="checkbox" className="validator-exit" value={validator.id}/></form></td>
                 </tr>
                 ))}

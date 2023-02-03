@@ -13,7 +13,7 @@ const Balance = ({validators, refreshData}: {validators: any, refreshData: Funct
   const [modalTitle, setModalTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  
+
   const handleModalClose = () => {
     setShowModal(false);
   }
@@ -23,7 +23,7 @@ const Balance = ({validators, refreshData}: {validators: any, refreshData: Funct
     setModalTitle(title);
     setShowModal(true);
   }
-	const { data: signer } = useSigner();
+  const { data: signer } = useSigner();
   const addStake = async () => {
     setLoading(true);
     try {
@@ -33,7 +33,6 @@ const Balance = ({validators, refreshData}: {validators: any, refreshData: Funct
           const amount = utils.parseEther(String(0.065 - Number(validators[i].stake)));
           const tx = await contract.addStake(Number(validators[i].id), {value: amount});
           await tx.wait();
-          // alert("Successfully added stake");
           handleModalShow("Success", "Your stake was added to the pool!")
         }
         else {
@@ -43,7 +42,7 @@ const Balance = ({validators, refreshData}: {validators: any, refreshData: Funct
       setLoading(false);
     } catch(err) {
       handleModalShow("Error", "Something went wrong. Your stake was not added to the pool.")
-      console.log(err);
+        console.log(err);
     }
     refreshData();
     setLoading(false);
@@ -59,12 +58,12 @@ const Balance = ({validators, refreshData}: {validators: any, refreshData: Funct
   }  
 
   const popover = (
-    <Popover id="popover-basic">
+      <Popover id="popover-basic">
       <Popover.Body>
-        You aren't able to withdraw until activated.
+      You aren't able to withdraw until activated.
       </Popover.Body>
-    </Popover>
-  );
+      </Popover>
+      );
 
   const standingPopover = (standing: string) => {
     let message;
@@ -73,136 +72,136 @@ const Balance = ({validators, refreshData}: {validators: any, refreshData: Funct
     }
     else if (standing === "Bad") {
       message = `You've missed another proposal, 0.015 ETH has been taken from your insurance deposit and added to the pool. 
-                  Top up your Insurance to be included in future rebalances.`;
+        Top up your Insurance to be included in future rebalances.`;
     }
     else if (standing === "Forced Exit") {
       message = `You proposed a block with the wrong fee recipient, 0.5 ETH has been taken from your insurance deposit and 
-                  you have been removed from the pool index`;
+        you have been removed from the pool index`;
     }
     else {
       message = "Only Active validators are given a standing, awaiting block proposal"
     }
     return (
-      <Popover id="popover-basic">
+        <Popover id="popover-basic">
         <Popover.Body>
-          {message}
+        {message}
         </Popover.Body>
-      </Popover>
-    )
+        </Popover>
+        )
   };
 
   return (
       <div className="tab-pane balance-page" id="tabs-2" role="tabpanel">
-        <h2>Rewards</h2>
-        <div className="mcrow">
-          <table>
-            <thead>
-              <tr>
-              <th className="text-center">Public Key</th>
-              <th className="text-center">Unclaimed Rewards</th>
-              <th className="text-center">Claimed Rewards</th>
-              <th className="text-center">Days till Rebalance</th>
-              <th className="text-center">Status</th>
+      <h2>Rewards</h2>
+      <div className="mcrow">
+      <table>
+      <thead>
+      <tr>
+      <th className="text-center">Public Key</th>
+      <th className="text-center">Unclaimed Rewards</th>
+      <th className="text-center">Claimed Rewards</th>
+      <th className="text-center">Days till Rebalance</th>
+      <th className="text-center">Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      {validators.map((validator: any, key: any) => (
+            <tr key={key}>
+            <td className='d-flex align-middle'>{`${validator.pubKey.slice(0,19)}...`}<i onClick={() =>  navigator.clipboard.writeText(validator.pubKey)} className="copy-button fa fa-clone fa-lg"></i></td>
+            <td className={`text-center ${validator.state.status !== "Awaiting Activation" ? '' : 'pl-ch'}`}>
+            {formatEthAmount(validator.rewards)}
+            {validator.state.status !== "Awaiting Activation" ? null : (
+                <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={popover}>
+                <span>
+                {<span className="cursor-pointer">❗️</span>}
+                </span>
+                </OverlayTrigger>
+                )}
+            </td>
+            <td className="text-center">{formatEthAmount(validator.withdrawals)}</td>
+            <td className="text-center">{`${daysTillRebalance()}`}</td>
+            <td className="text-center">
+            <span className={`badge ${statusBadgeColor(validator.state.status)} text-light`}>
+            {validator.state.status}
+            </span>
+            </td>
             </tr>
-            </thead>
-            <tbody>
-              {validators.map((validator: any, key: any) => (
-              <tr key={key}>
-                <td className='d-flex align-middle'>{`${validator.pubKey.slice(0,19)}...`}<i onClick={() =>  navigator.clipboard.writeText(validator.pubKey)} className="copy-button fa fa-clone fa-lg"></i></td>
-                <td className={`text-center ${validator.state.status !== "Awaiting Activation" ? '' : 'pl-ch'}`}>
-                  {formatEthAmount(validator.rewards)}
-                  {validator.state.status !== "Awaiting Activation" ? null : (
-                    <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={popover}>
-                      <span>
-                        {<span className="cursor-pointer">❗️</span>}
-                      </span>
-                    </OverlayTrigger>
-                  )}
-                </td>
-                <td className="text-center">{formatEthAmount(validator.withdrawals)}</td>
-                <td className="text-center">{`${daysTillRebalance()}`}</td>
-                <td className="text-center">
-                  <span className={`badge ${statusBadgeColor(validator.state.status)} text-light`}>
-                    {validator.state.status}
-                  </span>
-                </td>
-              </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <h2 className="margins2">Penalties</h2>
-        <div className="mcrow margins1">
-          <table>
-            <thead>
-              <tr>
-              <th className="text-center">Public Key</th>
-              <th className="text-center">Deposit Balance</th>
-              <th className="text-center">Penalties</th>
-              <th className="text-center">Status</th>
-              <th className="text-center">Standing</th>
-            </tr>
-            </thead>
-            <tbody>
-              {validators.map((validator: any, key: any) => (
-              <tr key={key}>
-                <td className='d-flex align-middle'>{`${validator.pubKey.slice(0,19)}...`}<i onClick={() =>  navigator.clipboard.writeText(validator.pubKey)} className="copy-button fa fa-clone fa-lg"></i></td>
-                <td className="text-center">{formatEthAmount(validator.stake)}</td>
-                <td className="text-center">{validator.slashes}</td>
-                <td className="text-center">
-                  <span className={`badge ${statusBadgeColor(validator.state.status)} text-light`}>
-                    {validator.state.status}
-                  </span>
-                </td>
-                <td className="text-center">
-                  <span className={`badge ${standingBadgeColor(validator.state.standing)} text-light`}>
-                    {validator.state.standing}{' '}
-                      {validator.state.standing !== "All Good" &&
-                        <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={standingPopover(validator.state.standing)}>
-                          <span className="text-light">
-                            <i className="fa fa-info-circle fa-md" aria-hidden="true"></i>
-                          </span>
-                        </OverlayTrigger>
-                      }
-                  </span>
-                </td>
-              </tr>
-              ))}
-            </tbody>
-          </table>
-          </div>
-          {loading ? 
-            (
-              <div className="d-flex flex-row fixebtn justify-content-center">
-                <HashLoader
-                  color={'#bc519a'}
-                  loading={loading}
-                  size={50}
-                  aria-label="Loading Spinner"
-                  data-testid="loader"
-                />
-              </div>
-            )
-            :
-            (
-              <div className="fixebtn" onClick={addStake}>
-                <a href="#" className="uniqbtn">Top Up Deposit</a>
-              </div>
-            )
+            ))}
+  </tbody>
+    </table>
+    </div>
+    <h2 className="margins2">Penalties</h2>
+    <div className="mcrow margins1">
+    <table>
+    <thead>
+    <tr>
+    <th className="text-center">Public Key</th>
+    <th className="text-center">Deposit Balance</th>
+    <th className="text-center">Penalties</th>
+    <th className="text-center">Status</th>
+    <th className="text-center">Standing</th>
+    </tr>
+    </thead>
+    <tbody>
+    {validators.map((validator: any, key: any) => (
+          <tr key={key}>
+          <td className='d-flex align-middle'>{`${validator.pubKey.slice(0,19)}...`}<i onClick={() =>  navigator.clipboard.writeText(validator.pubKey)} className="copy-button fa fa-clone fa-lg"></i></td>
+          <td className="text-center">{formatEthAmount(validator.stake)}</td>
+          <td className="text-center">{validator.slashes}</td>
+          <td className="text-center">
+          <span className={`badge ${statusBadgeColor(validator.state.status)} text-light`}>
+          {validator.state.status}
+          </span>
+          </td>
+          <td className="text-center">
+          <span className={`badge ${standingBadgeColor(validator.state.standing)} text-light`}>
+          {validator.state.standing}{' '}
+          {validator.state.standing !== "All Good" &&
+          <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={standingPopover(validator.state.standing)}>
+          <span className="text-light">
+          <i className="fa fa-info-circle fa-md" aria-hidden="true"></i>
+          </span>
+          </OverlayTrigger>
           }
-        <Modal show={showModal} onHide={handleModalClose} centered>
-          <Modal.Header closeButton>
-            <Modal.Title>{modalTitle}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {modalMessage}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={handleModalClose}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
-  );
+          </span>
+            </td>
+            </tr>
+            ))}
+  </tbody>
+    </table>
+    </div>
+    {loading ? 
+      (
+       <div className="d-flex flex-row fixebtn justify-content-center">
+       <HashLoader
+       color={'#bc519a'}
+       loading={loading}
+       size={50}
+       aria-label="Loading Spinner"
+       data-testid="loader"
+       />
+       </div>
+      )
+        :
+          (
+           <div className="fixebtn" onClick={addStake}>
+           <a href="#" className="uniqbtn">Top Up Deposit</a>
+           </div>
+          )
+    }
+  <Modal show={showModal} onHide={handleModalClose} centered>
+    <Modal.Header closeButton>
+    <Modal.Title>{modalTitle}</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+    {modalMessage}
+  </Modal.Body>
+    <Modal.Footer>
+    <Button onClick={handleModalClose}>Close</Button>
+    </Modal.Footer>
+    </Modal>
+    </div>
+    );
 }
 
 export default Balance;

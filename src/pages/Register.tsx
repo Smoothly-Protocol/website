@@ -43,8 +43,9 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
 		try	{
       const contract = useContract(signer);
 		  const stake: any = document.getElementById("stakeInfo");
+		  const boost: any = document.getElementById("boostInfo");
 		  const feeRecipient: any = document.getElementById("feeRecipient");
-			if (stake.checked && feeRecipient.checked ) {
+			if (stake.checked && feeRecipient.checked && boost) {
 				if (selectedValidators.length > 0) {
 					const tx = await contract.registerBulk(selectedValidators, 
 					{
@@ -52,14 +53,11 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
 					});
 					await tx.wait();
           handleModalShow("Success", "Registered on contract, still need to verify");
-					// alert("Successfully registered on contract, still need to verify");
 				} else {
-					// alert("No validators selected");
           handleModalShow("Error", "No validators selected");
 				}
 			} else {
         handleModalShow("Error", "Please make sure you are aware of all our guidelines first");
-				// alert("Please make sure you are aware of all our guidelines first");
 			}
 		} catch(err) {
 			console.log(err);
@@ -165,10 +163,10 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
           <div className="mcrow1 margins1">
             <div className="form-group form-check">
               <input type="checkbox" className="form-check-input" id="stakeInfo"/>
-              <label className="form-check-label">I've read the Smoothly <a href="https://0xsmoothly.notion.site/">Guides</a> and understand how the pool functions</label>
+              <label className="form-check-label">I've read the Smoothly <a href="https://0xsmoothly.notion.site/">Documentation</a> and understand how the pool functions</label>
             </div>
             <div className="form-group form-check">
-              <input type="checkbox" className="form-check-input" id="feeRecipient"/>
+              <input type="checkbox" className="form-check-input" id="boostInfo"/>
               <label className="form-check-label">Running MEV Boost is strongly encouraged to increase rewards for pool members.</label>
             </div>
             <div className="form-group form-check">
