@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { useSigner } from 'wagmi';
-import { useContract } from '../utils/constants';
-import formatEthAmount from '../utils/formatEthAmount';
+import { utils } from 'ethers';
+import { useSigner, useAccount } from 'wagmi';
+import { useContract, STAKE_FEE } from '../utils/constants';
 import { OverlayTrigger, Popover, Modal, Button } from 'react-bootstrap';
 import { statusBadgeColor } from '../utils/badgeColors';
+import { status, standing } from '../utils/standing';
 import { HashLoader } from 'react-spinners';
+import { getProofArgs } from '../utils/helpers';
 
 const Claim = ({validators, refreshData}: {validators: any, refreshData: Function}) => {
 	const { data: signer } = useSigner();
+  const { address } = useAccount();
 
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -17,19 +20,9 @@ const Claim = ({validators, refreshData}: {validators: any, refreshData: Functio
   const claim = async () => {
     setLoading(true);
     try {
-			let input: any = document.getElementsByClassName("validator-claim");
-			let arg: Array<number> = [];
-			for(let i = 0; i < input.length; i++) {
-				if(input[i].checked) {
-					arg.push(Number(input[i].value));
-				}
-			}
-      if(arg.length < 1) {
-        setLoading(false);
-        return handleModalShow("Error", "No validators selected.")
-      }
       const contract = useContract(signer);
-			const tx = await contract.withdrawRewards(arg);
+			const args = await getProofArgs(address, "withdrawals");
+			const tx = await contract.withdrawRewards(args[0], args[1], args[2]);
 			await tx.wait();
       handleModalShow("Success", "Rewards claimed successfully.")
     } catch(err) {
@@ -77,6 +70,10 @@ const Claim = ({validators, refreshData}: {validators: any, refreshData: Functio
     )
   };
 
+  const isActivated = (validator: any) => {
+    return status(validator) === "Awaiting Activation" ? true : false;
+  }
+
   return (
       <div className="tab-pane" id="tabs-3" role="tabpanel">
         <div className="fullhegigth">
@@ -85,7 +82,7 @@ const Claim = ({validators, refreshData}: {validators: any, refreshData: Functio
             <table>
               <thead>
                 <tr>
-                  <th className="text-center">Public Key</th>
+                  <th className="text-center">Validator index</th>
                   <th className="text-center">Unclaimed Rewards</th>
                   <th className="text-center">Status</th>
                   <th className="text-center">Claim</th>
@@ -100,23 +97,24 @@ const Claim = ({validators, refreshData}: {validators: any, refreshData: Functio
                 // })
                 .map((validator: any, key: any) => (
                   <tr key={key}>
-                    <td className='d-flex gap-2 align-middle text-center'>{`${validator.pubKey.slice(0,19)}...`}<i onClick={() =>  navigator.clipboard.writeText(validator.pubKey)} className="copy-button fa fa-clone fa-lg"></i></td>
-                    <td className="text-center">{formatEthAmount(validator.rewards)}</td>
+                    <td className='text-center'>{`${validator.index}`}</td>
+                    <td className="text-center">{utils.formatEther(validator.rewards)}</td>
                     <td className="text-center">
-                  <span className={`badge ${statusBadgeColor(validator.state.status)} text-light`}>
-                    {validator.state.status}
+                  <span className={`badge ${statusBadgeColor(status(validator))} text-light`}>
+                    {status(validator)}
                   </span>
                 </td>
                     <td className="text-center">
-                      {validator.state.status === "Awaiting Activation" ? (
-                        <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={standingPopover(validator.state.standing)}>
+                      { isActivated(validator) && (
+                        <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={standingPopover(standing(validator))}>
                           <span className="cursor-pointer">❓</span>
                         </OverlayTrigger>
-                        ) :(
-                          <form>
-                            <input type="checkbox" className="validator-claim" value={validator.id}/>
-                          </form>
-                        )}
+                        )
+                      }
+                          {//<form>
+                          //  <input type="checkbox" className="validator-claim" value={validator.index}/>
+                          //</form>
+													}
                     </td>
                   </tr>
                 ))}

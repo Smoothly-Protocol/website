@@ -2,7 +2,7 @@ export function statusBadgeColor(status: string) {
   if (status === "Active") {
     return "badge-success";
   }
-  else if (status === "Forced Exit") {
+  else if (status === "Deactivated") {
     return "badge-danger";
   }
   return "badge-info";

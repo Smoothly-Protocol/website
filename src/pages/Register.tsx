@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import { utils } from "ethers";
 import { useSigner } from 'wagmi';
 import { hexEncode } from '../utils/hex';
-import { contractAddress } from '../utils/constants';
+import { contractAddress, STAKE_FEE } from '../utils/constants';
+import { standing, status } from '../utils/standing';
 import { useContract } from '../utils/constants';
 import { statusBadgeColor, standingBadgeColor } from '../utils/badgeColors';
 import { HashLoader } from 'react-spinners';
@@ -29,10 +30,10 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
 
   const updateSelectedValidators = () => {
 		const arg: Array<string> = [];
-		const pubKey: any = document.getElementsByClassName("pubKey");
-		for(let i = 0; i < pubKey.length; i++) {
-			if(pubKey[i].checked) {
-				arg.push(hexEncode(pubKey[i].value));
+		const index: any = document.getElementsByClassName("index");
+		for(let i = 0; i < index.length; i++) {
+			if(index[i].checked) {
+				arg.push(index[i].value);
 			}
 		}
 		setSelectedValidators(arg);
@@ -49,7 +50,7 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
 				if (selectedValidators.length > 0) {
 					const tx = await contract.registerBulk(selectedValidators, 
 					{
-						value: utils.parseEther("0.065").mul(selectedValidators.length)
+						value: STAKE_FEE.mul(selectedValidators.length)
 					});
 					await tx.wait();
           handleModalShow("Success", "Registered on contract, still need to verify");
@@ -72,11 +73,11 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
       message = "Verify your validator configuration, you've missed a proposal";
     }
     else if (standing === "Bad") {
-      message = `You've missed another proposal, 0.015 ETH has been taken from your insurance deposit and added to the pool. 
+      message = `You've missed another proposal, 0.15 ETH has been taken from your insurance deposit and added to the pool. 
                   Top up your Insurance to be included in future rebalances.`;
     }
     else if (standing === "Forced Exit") {
-      message = `You proposed a block with the wrong fee recipient, 0.5 ETH has been taken from your insurance deposit and 
+      message = `You proposed a block with the wrong fee recipient, 0.65 ETH has been taken from your insurance deposit and 
                   you have been removed from the pool index`;
     }
     else {
@@ -98,7 +99,7 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
         <table>
           <thead>
             <tr>
-            <th className="text-center">Public Key</th>
+            <th className="text-center">Validator Index</th>
             <th  className="text-center">Status</th>
             <th  className="text-center">Standing</th>
           </tr>
@@ -106,17 +107,17 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
           <tbody>
             {validators.map((validator: any, key: any) => (
             <tr key={key}>
-              <td className='d-flex align-middle'>{`${validator.pubKey.slice(0,19)}...`}<i onClick={() => navigator.clipboard.writeText(validator.pubKey)} className="copy-button fa fa-clone fa-lg"></i></td>
+              <td className='text-center'>{`${validator.index}`}</td>
               <td className="text-center">
-                <span className={`badge ${statusBadgeColor(validator.state.status)} text-light`}>
-                  {validator.state.status}
+                <span className={`badge ${statusBadgeColor(status(validator))} text-light`}>
+                  {status(validator)}
                 </span>
               </td>
               <td className="text-center">
-                    <span className={`badge ${standingBadgeColor(validator.state.standing)} text-light`}>
-                      {validator.state.standing}{' '}
-                        {validator.state.standing !== "All Good" &&
-                          <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={standingPopover(validator.state.standing)}>
+                    <span className={`badge ${standingBadgeColor(standing(validator))} text-light`}>
+                      {standing(validator)}{' '}
+                        {standing(validator) !== "All Good" &&
+                          <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={standingPopover(standing(validator))}>
                             <span className="text-light">
                               <i className="fa fa-info-circle fa-md" aria-hidden="true"></i>
                             </span>
@@ -136,7 +137,7 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
             <table>
               <thead>
                 <tr>
-                  <th className="text-center">Public Key</th>
+                  <th className="text-center">Validator index</th>
                   <th className="text-center">Status</th>
                   <th className="text-center">Join the Pool!</th>
                 </tr>
@@ -144,12 +145,12 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
               <tbody>
                 {registrants.map((validator: any, key: any) => (
                 <tr key={key}>
-                  <td className='d-flex align-middle'>{`${validator.slice(0,19)}...`}<i onClick={() => navigator.clipboard.writeText(validator)} className="copy-button fa fa-clone fa-lg"></i></td>
+                  <td className='text-center'>{`${validator}`}</td>
                   <td className="text-center"><span className="badge badge-secondary text-light">Inactive</span></td>
                   <td className="text-center">
                     <form><input 
                     type="checkbox" 
-                    className="pubKey" 
+                    className="index" 
                     onChange={updateSelectedValidators}
                     value={validator}
                   />
@@ -197,7 +198,11 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
           :
           (<div className="fixebtn">
             <a href="#" onClick={register} className="uniqbtn">
-              Deposit {selectedValidators.length * 0.065} ETH & Register
+              Deposit {
+                utils.formatEther(
+                  STAKE_FEE.mul(selectedValidators.length)
+                )
+              } ETH & Register
             </a>
           </div>)
         )}

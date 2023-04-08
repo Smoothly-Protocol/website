@@ -12,199 +12,30 @@ import Claim from './Claim';
 import Exit from './Exit';
 import Pool from './Pool';
 
-const testValidators = [
-  {
-    id: 0,
-    pubKey: "0xa394dec8e73670bc8e30546990c5ca26bd431c28557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
-    rewards: "0.0",
-    slashFee: 0,
-    slashMiss: 0,
-    slashes: "0",
-    stake: "0.065",
-    state: {
-      status: "Active",
-      standing: "All Good"
-    },
-    withdrawals: "0.0"
-  },
-  {
-    id: 1,
-    pubKey: "0xa394dec8e73670bc8e3000000ca26bd431c28557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
-    rewards: "0.0",
-    slashFee: 0,
-    slashMiss: 0,
-    slashes: "0",
-    stake: "0.065",
-    state: {
-      status: "Active",
-      standing: "Okay"
-    },
-    withdrawals: "0.0"
-  },
-  {
-    id: 2,
-    pubKey: "0xa394dec8e73670bc8e9999995ca26bd431c28557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
-    rewards: "0.0",
-    slashFee: 0,
-    slashMiss: 0,
-    slashes: "0",
-    stake: "0.065",
-    state: {
-      status: "Active",
-      standing: "Bad"
-    },
-    withdrawals: "0.0"
-  },
-  {
-    id: 3,
-    pubKey: "0xa394dec8e73670bc8e3345638888888557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
-    rewards: "0.0",
-    slashFee: 0,
-    slashMiss: 0,
-    slashes: "0",
-    stake: "0.065",
-    state: {
-      status: "Active",
-      standing: "Forced Exit"
-    },
-    withdrawals: "0.0"
-  },
-  {
-    id: 4,
-    pubKey: "0xa394dec8e73670bc77777734d431c28557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
-    rewards: "0.0",
-    slashFee: 0,
-    slashMiss: 0,
-    slashes: "0",
-    stake: "0.065",
-    state: {
-      status: "Awaiting Activation",
-      standing: "N/A"
-    },
-    withdrawals: "0.0"
-  },
-  {
-    id: 5,
-    pubKey: "0xa394dec8e73670bc8e3345638888888557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
-    rewards: "0.0",
-    slashFee: 0,
-    slashMiss: 0,
-    slashes: "0",
-    stake: "0.065",
-    state: {
-      status: "Awaiting Activation",
-      standing: "N/A"
-    },
-    withdrawals: "0.0"
-  },
-  {
-    id: 6,
-    pubKey: "0xa394dec8e73670bc77777734d431c28557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
-    rewards: "0.0",
-    slashFee: 0,
-    slashMiss: 0,
-    slashes: "0",
-    stake: "0.065",
-    state: {
-      status: "Active",
-      standing: "Forced Exit"
-    },
-    withdrawals: "0.0"
-  }
-]
-const testRegistrants: any[] = [
-  "0xa394dec8e73670bc77777734d431c28557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
-  // "0xa394dec8e73670bc77777734d431c28557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
-  // "0xa394dec8e73670bc77777734d431c28557149b533c804847a354ad263cb9fcd3f0424a45c805f95b2709dfd",
-]
+import { HashLoader } from 'react-spinners';
+
 const Dashboard = () => {
   const { address } = useAccount();
   const { data: signer } = useSigner();
   const [ validators, setValidators ] = useState([]);
   const [ regValidators, setRegValidators ] = useState([]);
 
-  const getValidatorState = async (pubKey: string) => {
-    try {
-      const response = await fetch(`https://api-goerli.smoothly.money/validatorstatus/${pubKey}`);
-      const data = await response.json();
-      return data;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  const withdrawals = async (v: string) => {
-    try {
-      const response = await fetch(`https://api-goerli.smoothly.money/withdrawals/${v}`);
-      const data = await response.json();
-      return utils.formatEther(data.total_withdrawals);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  const getBalance = async () => {
-    try {
-      const contract = useContract(signer);
-      const b = await contract.getValidators();
-      let _validators: any = [];
-      for(let i = 0; i < b.length; i++) {
-        if(b[i][0] !== "0x") {
-          console.log(b[i]);
-          const pubKey = hexToChar(b[i][0]);
-          _validators.push({
-            pubKey: pubKey,
-            rewards: utils.formatUnits(b[i][1], "ether"), 
-            slashes: String(b[i][2].add(b[i][3])),
-            slashFee: String(b[i][2]),
-            slashMiss: String(b[i][3]),
-            stake: utils.formatUnits(b[i][4], "ether"),
-            id: i,
-            state: await getValidatorState(pubKey),
-            withdrawals: await withdrawals(pubKey)
-          });	
-        }
-      }
-    return _validators;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   const getValidators = async () => {
     try {
-      const url = `https://goerli.beaconcha.in/api/v1/validator/eth1/${address}`;
-      const res = await fetch(url);
-      const { data } = await res.json();
-      const registered = await getBalance();
-
-      if(data.length > 0) {
-        setValidators([]);
-        setRegValidators([]);
-        data.map((validator: any) => {
-            if(validator.validatorindex != null) {
-              let flag = false;
-              registered.map((val: any) => {
-                if(validator.publickey === val.pubKey) {
-                  setValidators(current => [...current, val]);
-                  flag = true;
-                }
-              });		
-              flag ? null : setRegValidators(current => [...current, validator.publickey]);
-            }
-        });
-      } else {
-        setValidators([]);
-      }
-    } catch(err) {
+      const response = await fetch(`http://localhost:4000/validators/${address}`);
+      const data = await response.json();
+      console.log(data);
+      setValidators(data.registered);
+      setRegValidators(data.unregistered);
+    } catch (err) {
       console.log(err);
-    }
+    } 
   }
 
-  const refreshData = () => {
+  const refreshData = async () => {
     console.log('refreshing data');
     if(signer != null) {
-      getValidators();
+      await getValidators();
       console.log('refreshing data'); // will remove after testing
     }
   }

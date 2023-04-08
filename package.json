@@ -26,6 +26,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@openzeppelin/merkle-tree": "^1.0.4",
     "@popperjs/core": "^2.11.6",
     "@rainbow-me/rainbowkit": "^0.8.1",
     "bootstrap": "^5.2.3",
