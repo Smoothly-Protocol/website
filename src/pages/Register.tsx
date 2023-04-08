@@ -94,6 +94,13 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
 
   return (
     <div className="tab-pane active" id="tabs-1" role="tabpanel">
+      {(registrants.length + validators.length === 0) && 
+      <>
+      <h2>No Validators detected to account</h2>
+      </>
+      }
+      {validators.length > 0 &&
+      <>
       <h2>Registered Validators</h2>
       <div className="mcrow">
         <table>
@@ -124,14 +131,27 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
                           </OverlayTrigger>
                         }
                     </span>
+                    {status(validator) === "Exited" && 
+                      <form><input 
+                      type="checkbox" 
+                      className="index" 
+                      onChange={updateSelectedValidators}
+                      value={validator.index}
+                    />
+                    </form>
+                    }
               </td>
             </tr>
             ))}
           </tbody>
         </table>
       </div>
-      {registrants.length > 0 && (
+      </>
+      }
+      {(registrants.length > 0 || selectedValidators.length > 0) && (
         <div>
+          {registrants.length > 0 &&
+          <>
           <h2 className="margins1">Unregistered Validators</h2>
           <div className="mcrow margins1">
             <table>
@@ -161,6 +181,8 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
               </tbody>
             </table>
           </div>
+          </>
+          }
           <div className="mcrow1 margins1">
             <div className="form-group form-check">
               <input type="checkbox" className="form-check-input" id="stakeInfo"/>
@@ -182,7 +204,7 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
           </div>
         </div>)
       }
-      {registrants.length > 0 && (
+      {(registrants.length > 0 || selectedValidators.length > 0) && (
         loading ? 
           (
             <div className="d-flex flex-row fixebtn justify-content-center">

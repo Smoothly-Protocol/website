@@ -6,7 +6,7 @@ export async function getProofArgs(eth1Addr: string, _tree: string): Promise<Arr
     const data = await response.json();
 		const tree = StandardMerkleTree.load(data);   
 		for (const [i, v] of tree.entries()) {
-			if (v[0] === eth1Addr) {
+			if (v[0] === eth1Addr.toLowerCase()) {
 				return [tree.getProof(i), v[1], v[2]];
 			}
 		}

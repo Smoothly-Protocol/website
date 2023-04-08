@@ -17,6 +17,7 @@ import { HashLoader } from 'react-spinners';
 const Dashboard = () => {
   const { address } = useAccount();
   const { data: signer } = useSigner();
+  const [ loading, setLoading ] = useState(true);
   const [ validators, setValidators ] = useState([]);
   const [ regValidators, setRegValidators ] = useState([]);
 
@@ -24,7 +25,6 @@ const Dashboard = () => {
     try {
       const response = await fetch(`http://localhost:4000/validators/${address}`);
       const data = await response.json();
-      console.log(data);
       setValidators(data.registered);
       setRegValidators(data.unregistered);
     } catch (err) {
@@ -33,10 +33,9 @@ const Dashboard = () => {
   }
 
   const refreshData = async () => {
-    console.log('refreshing data');
     if(signer != null) {
       await getValidators();
-      console.log('refreshing data'); // will remove after testing
+      setLoading(false);
     }
   }
 
@@ -45,7 +44,7 @@ const Dashboard = () => {
     refreshData();
     const updateDataInterval = setInterval(() => {
       refreshData();
-    }, 60000);
+    }, 10000);
 
     return () => clearInterval(updateDataInterval); 
     
@@ -55,6 +54,7 @@ const Dashboard = () => {
 return (
   <div id="bgcolorchange" className="d-flex flex-column justify-content-center">
     <Header />
+    { !loading &&
     <div className="tab-content maincontent">
       <Register refreshData={refreshData} registrants={regValidators} validators={validators}/>
       <Balance refreshData={refreshData} validators={validators}/>
@@ -62,6 +62,7 @@ return (
       <Exit refreshData={refreshData} validators={validators}/>
       <Pool />
     </div>
+    }
     <Footer />
   </div>
 );
