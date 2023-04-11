@@ -103,7 +103,7 @@ const Exit = ({validators, refreshData}: {validators: any, refreshData: Function
                 <tr key={key}>
                   <td className='text-center'>{`${validator.index}`}</td>
                   <td className='text-center'>
-                  {proof.length > 0 ? (
+                  {(proof.length > 0 && proof[1].includes(validator.index)) ? (
                     <span className={`badge badge-info text-light`}>
                       Allowed Exit
                     </span>
