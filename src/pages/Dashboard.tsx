@@ -23,7 +23,7 @@ const Dashboard = () => {
 
   const getValidators = async () => {
     try {
-      const response = await fetch(`node-goerli.smoothly.money/validators/${address}`);
+      const response = await fetch(`http://node-goerli.smoothly.money/validators/${address}`);
       const data = await response.json();
       setValidators(data.registered);
       setRegValidators(data.unregistered);
@@ -40,32 +40,32 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    // Load Initial Validators
-    refreshData();
-    const updateDataInterval = setInterval(() => {
+      // Load Initial Validators
       refreshData();
-    }, 10000);
+      const updateDataInterval = setInterval(() => {
+          refreshData();
+          }, 10000);
 
-    return () => clearInterval(updateDataInterval); 
-    
-  }, [signer]);
+      return () => clearInterval(updateDataInterval); 
+
+      }, [signer]);
 
 
-return (
-  <div id="bgcolorchange" className="d-flex flex-column justify-content-center">
-    <Header />
-    { !loading &&
-    <div className="tab-content maincontent">
+  return (
+      <div id="bgcolorchange" className="d-flex flex-column justify-content-center">
+      <Header />
+      { !loading &&
+      <div className="tab-content maincontent">
       <Register refreshData={refreshData} registrants={regValidators} validators={validators}/>
       <Balance refreshData={refreshData} validators={validators}/>
       <Claim refreshData={refreshData} validators={validators}/>
       <Exit refreshData={refreshData} validators={validators}/>
       <Pool />
-    </div>
-    }
-    <Footer />
-  </div>
-);
+      </div>
+      }
+      <Footer />
+      </div>
+      );
 }
 
 export default Dashboard;
