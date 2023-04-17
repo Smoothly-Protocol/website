@@ -23,7 +23,7 @@ const Dashboard = () => {
 
   const getValidators = async () => {
     try {
-      const response = await fetch(`http://node-goerli.smoothly.money/validators/${address}`);
+      const response = await fetch(`https://node-goerli.smoothly.money/validators/${address}`);
       const data = await response.json();
       setValidators(data.registered);
       setRegValidators(data.unregistered);

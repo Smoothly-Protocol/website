@@ -18,7 +18,7 @@ total_fee: 0
 
 const getPoolStats = async () => {
   try {
-    const response = await fetch(`http://node-goerli.smoothly.money/poolstats`);
+    const response = await fetch(`https://node-goerli.smoothly.money/poolstats`);
     const data = await response.json();
     setStats(data);
   } catch (err) {

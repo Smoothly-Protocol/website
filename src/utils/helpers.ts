@@ -2,7 +2,7 @@ import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
 
 export async function getProofArgs(eth1Addr: string, _tree: string): Promise<Array<any>> {
   try {
-    const response = await fetch(`http://node-goerli.smoothly.money/tree/${_tree}`);
+    const response = await fetch(`https://node-goerli.smoothly.money/tree/${_tree}`);
     const data = await response.json();
 		const tree = StandardMerkleTree.load(data);   
 		for (const [i, v] of tree.entries()) {
