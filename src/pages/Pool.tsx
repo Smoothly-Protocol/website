@@ -1,5 +1,6 @@
 import { utils } from 'ethers';
 import { STAKE_FEE, MISS_FEE } from "../utils/constants";
+import formatEthAmount from "../utils/formatEthAmount";
 import React, {useState, useEffect }from 'react';
 
 const Pool = () => {
@@ -50,11 +51,11 @@ return (
     <tr>
     <td className="text-center">{stats.activated}</td>
     <td className="text-center">{stats.awaiting_activation}</td>
-    <td className="text-center">{utils.formatEther(stats.total_rewards)}</td>
-<td className="text-center">{utils.formatEther(stats.total_stake)}</td>
-<td className="text-center">{utils.formatEther(stats.total_value)}</td>
-<td className="text-center">{utils.formatEther(stats.total_value_period)}</td>
-<td className="text-center">{utils.formatEther(stats.average_value)}</td>
+    <td className="text-center">{formatEthAmount(utils.formatEther(stats.total_rewards))}</td>
+<td className="text-center">{formatEthAmount(utils.formatEther(stats.total_stake))}</td>
+<td className="text-center">{formatEthAmount(utils.formatEther(stats.total_value))}</td>
+<td className="text-center">{formatEthAmount(utils.formatEther(stats.total_value_period))}</td>
+<td className="text-center">{formatEthAmount(utils.formatEther(stats.average_value))}</td>
 </tr>
 </tbody>
 </table>
@@ -75,9 +76,9 @@ return (
 <td className="text-center">{stats.total_fee}</td>
 <td className="text-center">{stats.total_miss}</td>
   <td className="text-center">
-{utils.formatEther(
+{formatEthAmount(utils.formatEther(
     STAKE_FEE.mul(stats.total_fee).add(MISS_FEE.mul(stats.total_miss)) 
-    )}
+    ))}
   </td>
   </tr>
   </tbody>
