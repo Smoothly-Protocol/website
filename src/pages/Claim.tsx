@@ -90,11 +90,6 @@ const Claim = ({validators, refreshData}: {validators: any, refreshData: Functio
               </thead>
               <tbody>
                 {validators
-                // .filter((validator: any) => {
-                //   if (validator.state.status === "Active") {
-                //     return validator;
-                //   }
-                // })
                 .map((validator: any, key: any) => (
                   <tr key={key}>
                     <td className='text-center'>{`${validator.index}`}</td>
@@ -105,16 +100,15 @@ const Claim = ({validators, refreshData}: {validators: any, refreshData: Functio
                   </span>
                 </td>
                     <td className="text-center">
-                      { isActivated(validator) && (
+                      { isActivated(validator) ? (
                         <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={standingPopover(standing(validator))}>
                           <span className="cursor-pointer">❓</span>
                         </OverlayTrigger>
-                        )
-                      }
-                          {//<form>
-                          //  <input type="checkbox" className="validator-claim" value={validator.index}/>
-                          //</form>
-													}
+                        ) : (
+                          <form>
+                            <input type="checkbox" className="validator-claim" value={validator.index}/>
+                          </form>
+                      )}
                     </td>
                   </tr>
                 ))}

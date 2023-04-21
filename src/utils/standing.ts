@@ -17,7 +17,7 @@ export const standing = (validator: any): string => {
 
 export const status = (validator: any): string => {
   if(validator.active) {
-    return validator.firstBlockProposed ? "Activated" : "Awaiting Activation";
+    return validator.firstBlockProposed ? "Active" : "Awaiting Activation";
   } else if(validator.deactivated) {
     return "Deactivated";
   } else if(!validator.active) {
