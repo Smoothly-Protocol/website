@@ -5,6 +5,7 @@ import { hexToChar } from '../utils/hex';
 import { useContract, STAKE_FEE } from '../utils/constants';
 import { standing, status } from '../utils/standing';
 import { statusBadgeColor, standingBadgeColor } from '../utils/badgeColors';
+import formatEthAmount from "../utils/formatEthAmount";
 import { OverlayTrigger, Popover, Button, Modal } from 'react-bootstrap';
 import { HashLoader } from 'react-spinners';
 
@@ -110,7 +111,7 @@ const Balance = ({validators, refreshData}: {validators: any, refreshData: Funct
             <tr key={key}>
             <td className='text-center'>{`${validator.index}`}</td>
             <td className={`text-center ${status(validator) !== "Awaiting Activation" ? '' : 'pl-ch'}`}>
-            {utils.formatEther(validator.rewards)}
+            {formatEthAmount(utils.formatEther(validator.rewards))}
             {status(validator) !== "Awaiting Activation" ? null : (
                 <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={popover}>
                 <span>
@@ -147,7 +148,7 @@ const Balance = ({validators, refreshData}: {validators: any, refreshData: Funct
     {validators.map((validator: any, key: any) => (
           <tr key={key}>
           <td className='text-center'>{`${validator.index}`}</td>
-          <td className="text-center">{utils.formatEther(validator.stake)}</td>
+          <td className="text-center">{formatEthAmount(utils.formatEther(validator.stake))}</td>
           <td className="text-center">{validator.slashFee + validator.slashMiss}</td>
           <td className="text-center">
           <span className={`badge ${statusBadgeColor(status(validator))} text-light`}>
