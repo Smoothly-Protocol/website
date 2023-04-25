@@ -5,6 +5,7 @@ import { useContract, STAKE_FEE } from '../utils/constants';
 import { OverlayTrigger, Popover, Modal, Button } from 'react-bootstrap';
 import { statusBadgeColor } from '../utils/badgeColors';
 import { status, standing } from '../utils/standing';
+import formatEthAmount from "../utils/formatEthAmount";
 import { HashLoader } from 'react-spinners';
 import { getProofArgs } from '../utils/helpers';
 
@@ -93,7 +94,7 @@ const Claim = ({validators, refreshData}: {validators: any, refreshData: Functio
                 .map((validator: any, key: any) => (
                   <tr key={key}>
                     <td className='text-center'>{`${validator.index}`}</td>
-                    <td className="text-center">{utils.formatEther(validator.rewards)}</td>
+                    <td className="text-center">{formatEthAmount(utils.formatEther(validator.rewards))}</td>
                     <td className="text-center">
                   <span className={`badge ${statusBadgeColor(status(validator))} text-light`}>
                     {status(validator)}
