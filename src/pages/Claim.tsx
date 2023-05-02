@@ -101,15 +101,12 @@ const Claim = ({validators, refreshData}: {validators: any, refreshData: Functio
                   </span>
                 </td>
                     <td className="text-center">
-                      { isActivated(validator) ? (
+                      { isActivated(validator) && (
                         <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={standingPopover(standing(validator))}>
                           <span className="cursor-pointer">❓</span>
                         </OverlayTrigger>
-                        ) : (
-                          <form>
-                            <input type="checkbox" className="validator-claim" value={validator.index}/>
-                          </form>
-                      )}
+                        )
+                      }
                     </td>
                   </tr>
                 ))}
