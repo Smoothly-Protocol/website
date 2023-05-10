@@ -190,7 +190,7 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
             </div>
             <div className="form-group form-check">
               <input type="checkbox" className="form-check-input" id="boostInfo"/>
-              <label className="form-check-label">Running MEV Boost is strongly encouraged to increase rewards for pool members.</label>
+              <label className="form-check-label">Running MEV Boost and subscribing to one or more of the approved relays is required.</label>
             </div>
             <div className="form-group form-check">
               <input type="checkbox" className="form-check-input" id="feeRecipient"/>
