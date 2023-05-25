@@ -113,6 +113,8 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
           </thead>
           <tbody>
             {validators.map((validator: any, key: any) => (
+            <>    
+            {validator.active &&
             <tr key={key}>
               <td className='text-center'>{`${validator.index}`}</td>
               <td className="text-center">
@@ -131,7 +133,7 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
                           </OverlayTrigger>
                         }
                     </span>
-                    {status(validator) === "Exited" && 
+                    {/*status(validator) === "Exited" && 
                       <form><input 
                       type="checkbox" 
                       className="index" 
@@ -139,9 +141,11 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
                       value={validator.index}
                     />
                     </form>
-                    }
+                    */}
               </td>
             </tr>
+            }
+            </>
             ))}
           </tbody>
         </table>
