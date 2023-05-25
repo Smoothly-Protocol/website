@@ -100,6 +100,8 @@ const Exit = ({validators, refreshData}: {validators: any, refreshData: Function
               </thead>
               <tbody>
                 {validators.map((validator: any, key: any) => (
+                <>    
+                {(validator.active || validator.exitRequested) &&
                 <tr key={key}>
                   <td className='text-center'>{`${validator.index}`}</td>
                   <td className='text-center'>
@@ -121,6 +123,8 @@ const Exit = ({validators, refreshData}: {validators: any, refreshData: Function
                   ))}
                   </td>
                 </tr>
+                }
+                </>
                 ))}
               </tbody>
             </table>

@@ -114,7 +114,7 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
           <tbody>
             {validators.map((validator: any, key: any) => (
             <>    
-            {validator.active &&
+            {(validator.active || validator.exitRequested) &&
             <tr key={key}>
               <td className='text-center'>{`${validator.index}`}</td>
               <td className="text-center">
