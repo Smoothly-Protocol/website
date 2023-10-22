@@ -74,10 +74,10 @@ const Exit = ({validators, refreshData}: {validators: any, refreshData: Function
   useEffect(() => {
     const getExitProof = async () => {
       try {
-        const args = await getProofArgs(address, "exits");
-        if(args.length > 0) {
-          setAllowedExit(args[1])
-          setProof(args)
+        const { proof } = await getProofArgs(address, "exits");
+        if(proof.length > 0) {
+          setAllowedExit(proof[1])
+          setProof(proof)
         }
       } catch(err: any) {
         console.log(err);

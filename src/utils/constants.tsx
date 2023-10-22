@@ -1,7 +1,7 @@
 import { Contract, Signer, utils } from "ethers";
 import { artifact } from './artifact';
 
-export const contractAddress = "0x2bE68B8Fd9E7941378CA81dF120F2F7eBb7c0Cf6";
+export const contractAddress = "0x894F0786cb41b1c1760E70d61cB2952749Da6382";
 export const STAKE_FEE = utils.parseEther("0.065");
 export const MISS_FEE = utils.parseEther("0.015");
 

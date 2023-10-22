@@ -22,13 +22,12 @@ const Claim = ({validators, refreshData}: {validators: any, refreshData: Functio
     setLoading(true);
     try {
       const contract = useContract(signer);
-			const args = await getProofArgs(address, "withdrawals");
-			const tx = await contract.withdrawRewards(args[0], args[1], args[2]);
+			const { proof } = await getProofArgs(address, "withdrawals");
+			const tx = await contract.withdrawRewards(proof[0], proof[1], proof[2]);
 			await tx.wait();
       handleModalShow("Success", "Rewards claimed successfully.")
     } catch(err) {
       handleModalShow("Error", "No rewards are able to be claimed. Make sure you have unclaimed rewards before attempting to claim.")
-      console.log(err);
     }
     refreshData();
     setLoading(false);
@@ -133,7 +132,7 @@ const Claim = ({validators, refreshData}: {validators: any, refreshData: Functio
         </div>
         <Modal show={showModal} onHide={handleModalClose} centered>
           <Modal.Header closeButton>
-            <Modal.Title>Error</Modal.Title>
+            <Modal.Title>{modalTitle}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {modalMessage}

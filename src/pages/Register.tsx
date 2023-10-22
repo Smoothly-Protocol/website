@@ -53,12 +53,12 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
 						value: STAKE_FEE.mul(selectedValidators.length)
 					});
 					await tx.wait();
-          handleModalShow("Success", "Registered on contract, still need to verify");
+          handleModalShow("Success", "Registered validators on contract, this can take up to 20 min to verify, please don't reregister the validators again. Come back later to check them out!");
 				} else {
           handleModalShow("Error", "No validators selected");
 				}
 			} else {
-        handleModalShow("Error", "Please make sure you are aware of all our guidelines first");
+        handleModalShow("Info", "Please make sure you are aware of all our guidelines first");
 			}
 		} catch(err) {
 			console.log(err);
@@ -169,14 +169,14 @@ const Register = ({validators, registrants, refreshData}: {validators: any, regi
               <tbody>
                 {registrants.map((validator: any, key: any) => (
                 <tr key={key}>
-                  <td className='text-center'>{`${validator}`}</td>
+                  <td className='text-center'>{`${validator.index}`}</td>
                   <td className="text-center"><span className="badge badge-secondary text-light">Inactive</span></td>
                   <td className="text-center">
                     <form><input 
                     type="checkbox" 
                     className="index" 
                     onChange={updateSelectedValidators}
-                    value={validator}
+                    value={validator.index}
                   />
                   </form>
                   </td>
